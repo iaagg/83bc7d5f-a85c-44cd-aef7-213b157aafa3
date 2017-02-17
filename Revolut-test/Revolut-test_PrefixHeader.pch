@@ -1,0 +1,7 @@
+
+#ifndef Revolut_test_PrefixHeader_pch
+#define Revolut_test_PrefixHeader_pch
+
+#define PRODUCTION [[[NSProcessInfo processInfo] environment] objectForKey:@"TESTING"] == nil
+
+#endif
