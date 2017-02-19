@@ -44,7 +44,7 @@
 
 - (void)p_setupToCurrencyInterface {
     UIView *overlay = [[UIView alloc] initWithFrame:self.view.frame];
-    overlay.backgroundColor = [[UIColor alloc] initWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+    overlay.backgroundColor = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0.15];
     [self.view addSubview:overlay];
     NSDictionary *views = @{@"overlay" : overlay};
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[overlay]|" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views]];
