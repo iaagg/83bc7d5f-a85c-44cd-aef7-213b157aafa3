@@ -2,7 +2,6 @@
 #import "CoreDataStack.h"
 
 static NSString * const kRevolutCoreDataModelName = @"Revolut-test";
-NSString * const kRevolutStoresDirectory = @"Stores";
 static NSString * const kRevolutDefaultStoreName = @"RevolutStore.sqlite";
 
 @interface CoreDataStack ()
@@ -14,7 +13,7 @@ static NSString * const kRevolutDefaultStoreName = @"RevolutStore.sqlite";
 @implementation CoreDataStack
 
 + (instancetype)shared {
-    __block CoreDataStack *stack = nil;
+    static CoreDataStack *stack = nil;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -67,7 +66,7 @@ static NSString * const kRevolutDefaultStoreName = @"RevolutStore.sqlite";
                                      options:options
                                        error:&error];
     
-    NSAssert(error != nil, @"Fatal error while adding CoreDataStack persistent store");
+    NSAssert(error == nil, @"Fatal error: adding CoreDataStack persistent store failed");
 }
 
 - (void)p_setupContexts {
@@ -88,8 +87,7 @@ static NSString * const kRevolutDefaultStoreName = @"RevolutStore.sqlite";
 
 - (NSURL *)p_storeURL {
     NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    NSURL *storesURL = [documentsURL URLByAppendingPathComponent:kRevolutStoresDirectory];
-    NSURL *defaultStoreURL = [storesURL URLByAppendingPathComponent:kRevolutDefaultStoreName];
+    NSURL *defaultStoreURL = [documentsURL URLByAppendingPathComponent:kRevolutDefaultStoreName];
     return defaultStoreURL;
 }
 

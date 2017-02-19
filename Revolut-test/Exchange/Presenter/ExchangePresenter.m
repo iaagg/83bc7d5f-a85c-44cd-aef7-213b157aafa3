@@ -29,7 +29,7 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
 - (void)makeFromCurrencyController {
     CurrencyViewController *currencyController = [self p_instantiateCurrencyController];
     _fromCurrencySubModule = currencyController.module;
-    _fromCurrencySubModule.wallet = _user.wallet;
+    [_fromCurrencySubModule setupWithWallet:_user.wallet currencyViewType:FromCurrencyType];
     _fromCurrencySubModule.parentModule = self;
     [_view didMakeFromCurrencyController:currencyController];
 }
@@ -37,13 +37,19 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
 - (void)makeToCurrencyController {
     CurrencyViewController *currencyController = [self p_instantiateCurrencyController];
     _toCurrencySubModule = currencyController.module;
-    _toCurrencySubModule.wallet = _user.wallet;
+    [_toCurrencySubModule setupWithWallet:_user.wallet currencyViewType:ToCurrencyType];
     _toCurrencySubModule.parentModule = self;
     [_view didMakeToCurrencyController:currencyController];
 }
 
 - (void)makeCurrencyRateView {
     
+}
+
+#pragma mark - ExchangeInteractorOutput
+
+- (void)didFetchDefaultUser:(PONSO_User *)user {
+    _user = user;
 }
 
 #pragma mark - Private methods

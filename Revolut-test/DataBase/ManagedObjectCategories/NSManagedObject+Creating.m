@@ -4,7 +4,8 @@
 @implementation NSManagedObject (Creating)
 
 + (instancetype)createInContext:(NSManagedObjectContext *)context {
-    NSEntityDescription *description = [NSEntityDescription entityForName:NSStringFromClass(self)
+    NSString *name = NSStringFromClass(self);
+    NSEntityDescription *description = [NSEntityDescription entityForName:name
                                                    inManagedObjectContext:context];
     NSManagedObject *createdObject = [NSEntityDescription insertNewObjectForEntityForName:description.name
                                                                    inManagedObjectContext:context];

@@ -1,11 +1,13 @@
 
 #import "CurrencyViewController.h"
 #import "CurrencyCollectionViewDataManager.h"
+#import "CurrencyDrawingHelper.h"
 
 @interface CurrencyViewController () <CurrencyCollectionViewDataManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView                       *collectionView;
 @property (strong, nonatomic) id<CurrencyCollectionViewDataManagerProtocol> dataManager;
+@property (assign, nonatomic) CurrencyViewType                              viewType;
 
 @end
 
@@ -13,13 +15,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [_output viewIsReady];
 }
 
 #pragma mark - CurrencyViewInput
 
-- (void)setupInitialState {
+- (void)setupInitialStateWithViewType:(CurrencyViewType)viewType {
+    [self p_setupInterfaceWithViewType:viewType];
     [_output makeDataSourceForCurrencyCollectionView];
 }
 
@@ -28,6 +30,27 @@
 }
 
 #pragma mark - Private mathods
+
+- (void)p_setupInterfaceWithViewType:(CurrencyViewType)viewType {
+    switch (viewType) {
+        case ToCurrencyType: {
+            [self p_setupToCurrencyInterface];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)p_setupToCurrencyInterface {
+    UIView *overlay = [[UIView alloc] initWithFrame:self.view.frame];
+    overlay.backgroundColor = [[UIColor alloc] initWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+    [self.view addSubview:overlay];
+    NSDictionary *views = @{@"overlay" : overlay};
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[overlay]|" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[overlay]|" options:NSLayoutFormatAlignAllCenterX metrics:nil views:views]];
+    [CurrencyDrawingHelper cutTriangleFromCurrencyOverlayView:overlay];
+}
 
 - (id<CurrencyModuleInput>)p_fetchModule {
     __block id<CurrencyModuleInput> module;

@@ -17,6 +17,20 @@
     }
 }
 
++ (User *)findByUUID:(NSString *)uuid inContext:(NSManagedObjectContext *)context {
+    NSFetchRequest *request = [self fetchRequest];
+    NSPredicate *uuidPredicate = [NSPredicate predicateWithFormat:@"uuid = %@", uuid];
+    [request setPredicate:uuidPredicate];
+    NSArray *results = [self p_executeFetchRequest:request inContext:context];
+    
+    if (results) {
+        return (User *)(results.firstObject);
+    } else {
+        return nil;
+    }
+
+}
+
 #pragma mark - Private methods
 
 + (NSArray *)p_executeFetchRequest:(NSFetchRequest *)fetchRequest inContext:(NSManagedObjectContext *)context {

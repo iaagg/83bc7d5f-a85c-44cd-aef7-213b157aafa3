@@ -54,8 +54,13 @@ static NSString * const kRevolutSeedCurrencies = @"SeedCurrencies";
         }
         
         //Symbol
-        NSString *symbol = dict[SYM];
-        [currency setSymbol:symbol];
+        NSNumber *characterNumber = dict[SYM];
+        
+        if (characterNumber) {
+            unichar symbol = characterNumber.intValue;
+            NSString *symbolString = [NSString stringWithFormat:@"%C", symbol];
+            [currency setSymbol:symbolString];
+        }
         
         [parsedCurrencies addObject:currency];
     }

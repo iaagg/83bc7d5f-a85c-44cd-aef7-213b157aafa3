@@ -1,8 +1,9 @@
 
 #import <Foundation/Foundation.h>
+@class PONSO_User;
 
 @protocol ExchangeInteractorOutput <NSObject>
 
-- (void)didFetchDefaultUser;
+- (void)didFetchDefaultUser:(PONSO_User *)user;
 
 @end

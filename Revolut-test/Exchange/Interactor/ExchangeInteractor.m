@@ -5,18 +5,11 @@
 #import "Wallet+CoreDataClass.h"
 #import "Currency+CoreDataClass.h"
 #import "CurrenciesParser.h"
-
-#define SYM = @"symbol"
-#define ABBR = @"abbreviation"
-
-#define EUR [NSString stringWithFormat:@"%C", 0x20ac]
-#define USD [NSString stringWithFormat:@"%C", 0x24]
-#define GBP [NSString stringWithFormat:@"%C", 0xa3]
-
-#define DEFAULT_CURRENCIES  @[@{ABBR : @"EUR", SYM : EUR}, @{ABBR : @"USD", SYM : USD}, @{ABBR : @"GBP", SYM : GBP}]
+#import "PONSO_User.h"
+#import "PONSO_UserParser.h"
+#import "UserSaver.h"
 
 static NSString * const kRevolutDefaultUsername = @"defaultRevolutUser";
-static NSInteger const kRevolutDefaultStartAmount = 100;
 
 @interface ExchangeInteractor ()
 
@@ -41,15 +34,31 @@ static NSInteger const kRevolutDefaultStartAmount = 100;
         defaultUser = [self p_setupDefaultUser];
     }
     
+    [self p_parseCoreDataUserModel:defaultUser];
+}
+
+- (void)savePonsoUser:(PONSO_User *)ponsoUser {
+    NSManagedObjectContext *bgContext = [_coreDataStack makeBackgroundContext];
+    User *user = [User findByUUID:ponsoUser.uuid inContext:bgContext];
+    NSAssert(user == nil, @"Fatal error: user with uuid: %@ wasn't found in db", ponsoUser.uuid);
+    
+    [UserSaver savePonsoUser:ponsoUser toCoreDataUser:user inBgContext:bgContext];
+
 }
 
 #pragma mark - Private methods
+
+- (void)p_parseCoreDataUserModel:(User *)user {
+    PONSO_User *ponsoUser = [PONSO_UserParser parseCoreDataUser:user];
+    [_output didFetchDefaultUser:ponsoUser];
+}
 
 - (User *)p_setupDefaultUser {
     NSManagedObjectContext *mainContext = _coreDataStack.mainQueueContext;
     User *defaultUser = [User createInContext:mainContext];
     [defaultUser setWallet:[self p_setupDefaultWallet]];
     [defaultUser setUsername:kRevolutDefaultUsername];
+    [defaultUser setUuid:[NSUUID UUID].UUIDString];
     [_coreDataStack saveMainContext];
     return defaultUser;
 }
@@ -57,12 +66,15 @@ static NSInteger const kRevolutDefaultStartAmount = 100;
 - (Wallet *)p_setupDefaultWallet {
     NSManagedObjectContext *mainContext = _coreDataStack.mainQueueContext;
     Wallet *wallet = [Wallet createInContext:mainContext];
+    NSOrderedSet<Currency *> *currencies = [self p_setupDefaultCurrencies];
+    [wallet setCurrencies:currencies];
     return wallet;
 }
 
-- (NSArray<Currency *> *)p_setupDefaultCurrencies {
+- (NSOrderedSet<Currency *> *)p_setupDefaultCurrencies {
     NSArray *currencies = [CurrenciesParser parseSeedCurrencies];
-    return currencies;
+    NSOrderedSet<Currency *> *currenciesSet = [NSOrderedSet orderedSetWithArray:currencies];
+    return currenciesSet;
 }
 
 @end

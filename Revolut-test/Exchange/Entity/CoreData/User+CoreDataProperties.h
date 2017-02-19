@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSFetchRequest<User *> *)fetchRequest;
 
 @property (nullable, nonatomic, copy) NSString *username;
+@property (nullable, nonatomic, copy) NSString *uuid;
 @property (nullable, nonatomic, retain) Wallet *wallet;
 
 @end

@@ -6,7 +6,7 @@ static NSString * const kRevolutTestStoreName = @"RevolutTestStore.sqlite";
 @implementation TestCoreDataStack
 
 + (instancetype)shared {
-    __block TestCoreDataStack *stack = nil;
+    static TestCoreDataStack *stack = nil;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -38,7 +38,7 @@ static NSString * const kRevolutTestStoreName = @"RevolutTestStore.sqlite";
                                      options:options
                                        error:&error];
     
-    NSAssert(error != nil, @"Fatal error while adding TestCoreDataStack persistent store");
+    NSAssert(error != nil, @"Fatal error: adding TestCoreDataStack persistent store failed");
 }
 
 @end

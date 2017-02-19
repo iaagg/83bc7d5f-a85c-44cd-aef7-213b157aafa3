@@ -16,6 +16,7 @@
 }
 
 @dynamic username;
+@dynamic uuid;
 @dynamic wallet;
 
 @end

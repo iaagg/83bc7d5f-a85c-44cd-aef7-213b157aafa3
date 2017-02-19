@@ -1,19 +1,15 @@
 {
-    "currencies" : [
-                    {
-                    "abbr" : "EUR",
-                    "sym" : "\U0020ac"
-                    "amount" : 100
-                    },
-                    {
-                    "abbr" : "USD",
-                    "sym" : "\U0024"
-                    "amount" : 100
-                    },
-                    {
-                    "abbr" : "GBP",
-                    "sym" : "\U00a3"
-                    "amount" : 100
-                    }
-                    ]
+    "currencies": [{
+                   "abbr": "EUR",
+                   "sym": 8364,
+                   "amount": 100
+                   }, {
+                   "abbr": "USD",
+                   "sym": 36,
+                   "amount": 100
+                   }, {
+                   "abbr": "GBP",
+                   "sym": 163,
+                   "amount": 100
+                   }]
 }
