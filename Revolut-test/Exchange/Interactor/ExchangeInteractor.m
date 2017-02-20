@@ -8,12 +8,16 @@
 #import "PONSO_User.h"
 #import "PONSO_UserParser.h"
 #import "UserSaver.h"
+#import "NetworkClient.h"
 
 static NSString * const kRevolutDefaultUsername = @"defaultRevolutUser";
+static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
 
-@interface ExchangeInteractor ()
+@interface ExchangeInteractor () <CurrenciesParserDelegate>
 
-@property (weak, nonatomic) id<StackProtocol> coreDataStack;
+@property (weak, nonatomic) id<StackProtocol>               coreDataStack;
+@property (strong, nonatomic) id<CurrenciesParserProtocol>  currenciesParser;
+@property (weak, nonatomic) NSTimer                         *fecthRatesTimer;
 
 @end
 
@@ -22,9 +26,18 @@ static NSString * const kRevolutDefaultUsername = @"defaultRevolutUser";
 - (instancetype)init {
     if (self = [super init]) {
         _coreDataStack = [StackFactory stackForCurrentEnvironment];
+        _currenciesParser = [[CurrenciesParser alloc] initWithDelegate:self];
     }
     
     return self;
+}
+
+#pragma mark - ExchangeIneractorInput
+
+- (void)startFetchingRatesTask {
+    [_output didStartFetchingCurrenciesRates];
+    [self p_fetchRatesData];
+    _fecthRatesTimer = [NSTimer scheduledTimerWithTimeInterval:kRevolutRatesRequestPeriod target:self selector:@selector(p_fetchRatesData) userInfo:nil repeats:YES];
 }
 
 - (void)fetchDefaultUser {
@@ -46,7 +59,25 @@ static NSString * const kRevolutDefaultUsername = @"defaultRevolutUser";
 
 }
 
+#pragma mark - CurrenciesParserDelegate
+
+- (void)parserDidParseCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates {
+    [_output didFetchCurrenciesRates:currenciesRates];
+}
+
+- (void)errorOccuredWhileParsing {
+    [_output didFailedFetchingCurrenciesRates];
+}
+
 #pragma mark - Private methods
+
+- (void)p_fetchRatesData {
+    [[NetworkClient shared] requestCurrenciesWithSuccess:^(NSData *response) {
+        [_currenciesParser parseXMLWithData:response];
+    } failureHandler:^(NSError *error) {
+        [_output didFailedFetchingCurrenciesRates];
+    }];
+}
 
 - (void)p_parseCoreDataUserModel:(User *)user {
     PONSO_User *ponsoUser = [PONSO_UserParser parseCoreDataUser:user];

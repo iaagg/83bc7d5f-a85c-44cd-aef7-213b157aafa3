@@ -3,10 +3,15 @@
 #import "ExchangeNotificationsHandlerProtocol.h"
 #import "ExchangeNotificationsHandler.h"
 
+static NSString * const kRevolutCurrenciesRatesUpdatingFailedMessage = @"Error while updating currencies rates. Please, retry or wait for update";
+static NSString * const kRevolutRetryUpdateButtonTitle = @"Retry";
+static NSString * const kRevolutWaitForUpdateButtonTitle = @"OK";
+
 @interface ExchangeViewController ()
 
 @property (strong, nonatomic) id<ExchangeNotificationsHandlerProtocol>  notificationsHandler;
-@property (weak, nonatomic) CurrencyRateView                            *currencyRateView;
+@property (weak, nonatomic) IBOutlet CurrencyRateView                   *currencyRateView;
+@property (weak, nonatomic) IBOutlet UIView                             *currencyRateViewContainer;
 @property (weak, nonatomic) IBOutlet UIView                             *fromCurrencyContainer;
 @property (weak, nonatomic) IBOutlet UIView                             *toCurrencyContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint                 *toCurrencyContainerBottomConstraint;
@@ -17,6 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self p_setupCurrencyRateView];
     [_output viewIsReady];
 }
 
@@ -27,17 +33,24 @@
     [self p_fetchSubviews];
 }
 
+- (void)setUpdatingCurrenciesRatesState {
+    [_currencyRateView setUpdatingState];
+}
+
+- (void)setUpdatedCurrenciesRatesStateWith:(CurrencyRate *)rate {
+    [_currencyRateView updateRateWithCurrencyRate:rate];
+}
+
+- (void)setUpdatingCurrenciesRatesFailedState {
+    [self p_presentUpdatingFailedAlert];
+}
+
 - (void)didMakeFromCurrencyController:(UIViewController *)controller {
     [self p_addFromCurrencyController:controller];
 }
 
 - (void)didMakeToCurrencyController:(UIViewController *)controller {
     [self p_addToCurrencyController:controller];
-}
-
-- (void)didMakeCurrencyRateView:(CurrencyRateView *)currencyRateView {
-    [self.navigationItem setTitleView:currencyRateView];
-    _currencyRateView = currencyRateView;
 }
 
 #pragma mark - ExchangeNotificationHandlerDelegate
@@ -49,10 +62,14 @@
 
 #pragma mark - Private methods
 
+- (void)p_setupCurrencyRateView {
+    [_currencyRateViewContainer addSubview:_currencyRateView];
+    [self p_addToMarginsConstraintsFromView:_currencyRateView toView:_currencyRateViewContainer];
+}
+
 - (void)p_fetchSubviews {
     [_output makeFromCurrencyController];
     [_output makeToCurrencyController];
-    [_output makeCurrencyRateView];
 }
 
 - (void)p_addFromCurrencyController:(UIViewController *)controller {
@@ -82,6 +99,21 @@
 - (void)p_addChildViewController:(UIViewController *)child {
     [self addChildViewController:child];
     [child didMoveToParentViewController:self];
+}
+
+- (void)p_presentUpdatingFailedAlert {
+    __weak ExchangeViewController *weakSelf = self;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:kRevolutCurrenciesRatesUpdatingFailedMessage preferredStyle:UIAlertControllerStyleAlert];
+    
+    //Retry action
+    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:kRevolutRetryUpdateButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakSelf.output userChoosedToRetryToUpdateCurrencies];
+    }];
+    [alert addAction:retryAction];
+    
+    //OK action
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:kRevolutWaitForUpdateButtonTitle style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:okAction];
 }
 
 @end

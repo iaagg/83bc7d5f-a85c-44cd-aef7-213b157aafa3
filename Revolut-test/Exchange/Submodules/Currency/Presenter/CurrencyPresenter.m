@@ -28,7 +28,7 @@
 }
 
 - (void)makeDataSourceForCurrencyCollectionView {
-    
+    [_interactor makeDataSourceForCurrencyCollectionViewWithWallet:_wallet];
 }
 
 #pragma mark - CurrencyIntractorOutput

@@ -8,13 +8,14 @@ static NSInteger const kRevolutCarouselSectionsCount = 3;
 @implementation CurrencyInteractor
 
 - (void)makeDataSourceForCurrencyCollectionViewWithWallet:(PONSO_Wallet *)wallet {
-    NSArray *currencies = wallet.currencies;
-    NSMutableArray *dataSource = [NSMutableArray array];
+    NSArray *currencies = wallet.currencies;
+    NSMutableArray *dataSource = [NSMutableArray new];
     
-    for (int i = 0; i < kRevolutCarouselSectionsCount ; i++) {
-        dataSource add
+    for (int i = 0; i < kRevolutCarouselSectionsCount; i++) {
+        [dataSource addObject:currencies];
     }
-
+    
+    [_output didMakeDataSourceForCurrencyCollectionView:dataSource];
 }
 
 @end

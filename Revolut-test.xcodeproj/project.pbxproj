@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F0336191E5B4E80009FD37E /* CurrencyTextFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0336181E5B4E80009FD37E /* CurrencyTextFormatter.m */; };
+		3F03361A1E5B4E80009FD37E /* CurrencyTextFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0336181E5B4E80009FD37E /* CurrencyTextFormatter.m */; };
+		3F03361D1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F03361C1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.m */; };
+		3F03361E1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F03361C1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.m */; };
+		3F0336211E5B6275009FD37E /* NetworkClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0336201E5B6275009FD37E /* NetworkClient.m */; };
+		3F0336221E5B6275009FD37E /* NetworkClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0336201E5B6275009FD37E /* NetworkClient.m */; };
+		3F0336281E5B8E5A009FD37E /* CurrencyRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0336271E5B8E5A009FD37E /* CurrencyRate.m */; };
+		3F0336291E5B8E5A009FD37E /* CurrencyRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0336271E5B8E5A009FD37E /* CurrencyRate.m */; };
 		3FC1209B1E59DF5C00A834BE /* CurrencyCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC1209A1E59DF5C00A834BE /* CurrencyCollectionViewCell.m */; };
 		3FC1209C1E59DF5C00A834BE /* CurrencyCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC1209A1E59DF5C00A834BE /* CurrencyCollectionViewCell.m */; };
 		3FC120A01E59E06200A834BE /* CurrencyCollectionViewDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC1209F1E59E06200A834BE /* CurrencyCollectionViewDataManager.m */; };
@@ -16,8 +24,8 @@
 		3FC120B71E59F54800A834BE /* Currency+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC120B31E59F54800A834BE /* Currency+CoreDataProperties.m */; };
 		3FC120C91E59F98D00A834BE /* CurrenciesParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC120C61E59F98D00A834BE /* CurrenciesParser.m */; };
 		3FC120CA1E59F98D00A834BE /* CurrenciesParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC120C61E59F98D00A834BE /* CurrenciesParser.m */; };
-		3FC120CB1E59F98D00A834BE /* SeedCurrencies.json in Resources */ = {isa = PBXBuildFile; fileRef = 3FC120C71E59F98D00A834BE /* SeedCurrencies.json */; };
-		3FC120CC1E59F98D00A834BE /* SeedCurrencies.json in Resources */ = {isa = PBXBuildFile; fileRef = 3FC120C71E59F98D00A834BE /* SeedCurrencies.json */; };
+		3FC120CB1E59F98D00A834BE /* CurrenciesSeeds.json in Resources */ = {isa = PBXBuildFile; fileRef = 3FC120C71E59F98D00A834BE /* CurrenciesSeeds.json */; };
+		3FC120CC1E59F98D00A834BE /* CurrenciesSeeds.json in Resources */ = {isa = PBXBuildFile; fileRef = 3FC120C71E59F98D00A834BE /* CurrenciesSeeds.json */; };
 		3FC120DE1E5A0D6F00A834BE /* PONSO_User.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC120DB1E5A0D6F00A834BE /* PONSO_User.m */; };
 		3FC120DF1E5A0D6F00A834BE /* PONSO_User.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC120DB1E5A0D6F00A834BE /* PONSO_User.m */; };
 		3FC120E01E5A0D6F00A834BE /* PONSO_Wallet.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC120DD1E5A0D6F00A834BE /* PONSO_Wallet.m */; };
@@ -104,6 +112,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F0336171E5B4E80009FD37E /* CurrencyTextFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyTextFormatter.h; sourceTree = "<group>"; };
+		3F0336181E5B4E80009FD37E /* CurrencyTextFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyTextFormatter.m; sourceTree = "<group>"; };
+		3F03361B1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyValueTextfieldDelegate.h; sourceTree = "<group>"; };
+		3F03361C1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyValueTextfieldDelegate.m; sourceTree = "<group>"; };
+		3F03361F1E5B6275009FD37E /* NetworkClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkClient.h; path = "Revolut-test/Exchange/Submodules/Currency/View/Helpers/NetworkClient.h"; sourceTree = SOURCE_ROOT; };
+		3F0336201E5B6275009FD37E /* NetworkClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NetworkClient.m; path = "Revolut-test/Exchange/Submodules/Currency/View/Helpers/NetworkClient.m"; sourceTree = SOURCE_ROOT; };
+		3F0336231E5B6A76009FD37E /* CurrenciesParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrenciesParserDelegate.h; sourceTree = "<group>"; };
+		3F0336261E5B8E5A009FD37E /* CurrencyRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyRate.h; sourceTree = "<group>"; };
+		3F0336271E5B8E5A009FD37E /* CurrencyRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyRate.m; sourceTree = "<group>"; };
 		3FC120991E59DF5C00A834BE /* CurrencyCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyCollectionViewCell.h; sourceTree = "<group>"; };
 		3FC1209A1E59DF5C00A834BE /* CurrencyCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyCollectionViewCell.m; sourceTree = "<group>"; };
 		3FC1209E1E59E06200A834BE /* CurrencyCollectionViewDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyCollectionViewDataManager.h; sourceTree = "<group>"; };
@@ -116,7 +133,7 @@
 		3FC120B31E59F54800A834BE /* Currency+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Currency+CoreDataProperties.m"; sourceTree = "<group>"; };
 		3FC120C51E59F98D00A834BE /* CurrenciesParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrenciesParser.h; sourceTree = "<group>"; };
 		3FC120C61E59F98D00A834BE /* CurrenciesParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrenciesParser.m; sourceTree = "<group>"; };
-		3FC120C71E59F98D00A834BE /* SeedCurrencies.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SeedCurrencies.json; sourceTree = "<group>"; };
+		3FC120C71E59F98D00A834BE /* CurrenciesSeeds.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CurrenciesSeeds.json; sourceTree = "<group>"; };
 		3FC120C81E59F98D00A834BE /* SeedDataExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeedDataExtractor.h; sourceTree = "<group>"; };
 		3FC120CD1E59F9BB00A834BE /* CurrenciesParserProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrenciesParserProtocol.h; sourceTree = "<group>"; };
 		3FC120DA1E5A0D6F00A834BE /* PONSO_User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PONSO_User.h; sourceTree = "<group>"; };
@@ -237,6 +254,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F0336251E5B8E37009FD37E /* CurrencyRate */ = {
+			isa = PBXGroup;
+			children = (
+				3F0336261E5B8E5A009FD37E /* CurrencyRate.h */,
+				3F0336271E5B8E5A009FD37E /* CurrencyRate.m */,
+			);
+			name = CurrencyRate;
+			sourceTree = "<group>";
+		};
 		3FC120981E59DF0900A834BE /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
@@ -255,6 +281,10 @@
 				3FC1209F1E59E06200A834BE /* CurrencyCollectionViewDataManager.m */,
 				3FC121141E5A211200A834BE /* CurrencyDrawingHelper.h */,
 				3FC121151E5A211200A834BE /* CurrencyDrawingHelper.m */,
+				3F0336171E5B4E80009FD37E /* CurrencyTextFormatter.h */,
+				3F0336181E5B4E80009FD37E /* CurrencyTextFormatter.m */,
+				3F03361B1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.h */,
+				3F03361C1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -262,10 +292,11 @@
 		3FC120C41E59F93D00A834BE /* Parser */ = {
 			isa = PBXGroup;
 			children = (
+				3F0336231E5B6A76009FD37E /* CurrenciesParserDelegate.h */,
 				3FC120CD1E59F9BB00A834BE /* CurrenciesParserProtocol.h */,
 				3FC120C51E59F98D00A834BE /* CurrenciesParser.h */,
 				3FC120C61E59F98D00A834BE /* CurrenciesParser.m */,
-				3FC120C71E59F98D00A834BE /* SeedCurrencies.json */,
+				3FC120C71E59F98D00A834BE /* CurrenciesSeeds.json */,
 				3FC120C81E59F98D00A834BE /* SeedDataExtractor.h */,
 			);
 			path = Parser;
@@ -294,6 +325,7 @@
 			children = (
 				3FC120FB1E5A0DE700A834BE /* User */,
 				3FC120FC1E5A0DF100A834BE /* Wallet */,
+				3F0336251E5B8E37009FD37E /* CurrencyRate */,
 			);
 			path = PONSO;
 			sourceTree = "<group>";
@@ -641,6 +673,8 @@
 		6B85C9441E578D9A0082A62C /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				3F03361F1E5B6275009FD37E /* NetworkClient.h */,
+				3F0336201E5B6275009FD37E /* NetworkClient.m */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -766,7 +800,7 @@
 				6B85C9181E5779C20082A62C /* LaunchScreen.storyboard in Resources */,
 				6B85C9151E5779C20082A62C /* Assets.xcassets in Resources */,
 				6B85C9131E5779C20082A62C /* Exchange.storyboard in Resources */,
-				3FC120CB1E59F98D00A834BE /* SeedCurrencies.json in Resources */,
+				3FC120CB1E59F98D00A834BE /* CurrenciesSeeds.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -774,7 +808,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FC120CC1E59F98D00A834BE /* SeedCurrencies.json in Resources */,
+				3FC120CC1E59F98D00A834BE /* CurrenciesSeeds.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -798,6 +832,8 @@
 				6B85C9481E578E080082A62C /* ExchangeModuleInitializer.m in Sources */,
 				6B85C94C1E578E4B0082A62C /* ExchangeViewController.m in Sources */,
 				3FEDAB511E59969000D3C0A8 /* ExchangeNotificationsHandler.m in Sources */,
+				3F0336281E5B8E5A009FD37E /* CurrencyRate.m in Sources */,
+				3F0336191E5B4E80009FD37E /* CurrencyTextFormatter.m in Sources */,
 				3FEDABE01E59D89F00D3C0A8 /* CurrencyInteractor.m in Sources */,
 				3FC120A01E59E06200A834BE /* CurrencyCollectionViewDataManager.m in Sources */,
 				3FC120E01E5A0D6F00A834BE /* PONSO_Wallet.m in Sources */,
@@ -816,9 +852,11 @@
 				3FC120DE1E5A0D6F00A834BE /* PONSO_User.m in Sources */,
 				3FEDABD21E59D76600D3C0A8 /* CurrencyViewController.m in Sources */,
 				3FC1210D1E5A14B600A834BE /* User+FetchRequests.m in Sources */,
+				3F0336211E5B6275009FD37E /* NetworkClient.m in Sources */,
 				3FC1209B1E59DF5C00A834BE /* CurrencyCollectionViewCell.m in Sources */,
 				3FC121011E5A0E4600A834BE /* PONSO_UserParser.m in Sources */,
 				6B85C9521E5790030082A62C /* ExchangePresenter.m in Sources */,
+				3F03361D1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.m in Sources */,
 				3FC121091E5A100700A834BE /* PONSO_CurrencyParser.m in Sources */,
 				6B85C95D1E5790740082A62C /* ExchangeModuleConfigurator.m in Sources */,
 				6B85C9571E5790330082A62C /* ExchangeInteractor.m in Sources */,
@@ -846,9 +884,11 @@
 				6B85C9231E5779C20082A62C /* Revolut_testTests.m in Sources */,
 				6B85C9531E5790030082A62C /* ExchangePresenter.m in Sources */,
 				3FEDABD71E59D79200D3C0A8 /* CurrencyPresenter.m in Sources */,
+				3F0336221E5B6275009FD37E /* NetworkClient.m in Sources */,
 				3FC120B71E59F54800A834BE /* Currency+CoreDataProperties.m in Sources */,
 				6B85C9581E5790330082A62C /* ExchangeInteractor.m in Sources */,
 				3FC1210A1E5A100700A834BE /* PONSO_CurrencyParser.m in Sources */,
+				3F0336291E5B8E5A009FD37E /* CurrencyRate.m in Sources */,
 				3FC121061E5A0EF700A834BE /* PONSO_WalletParser.m in Sources */,
 				3FC120F81E5A0DD300A834BE /* NSManagedObject+Creating.m in Sources */,
 				3FC120A11E59E06200A834BE /* CurrencyCollectionViewDataManager.m in Sources */,
@@ -856,6 +896,7 @@
 				3FEDAB7D1E59B8DC00D3C0A8 /* StackFactory.m in Sources */,
 				3FC120DF1E5A0D6F00A834BE /* PONSO_User.m in Sources */,
 				3FEDABE11E59D89F00D3C0A8 /* CurrencyInteractor.m in Sources */,
+				3F03361E1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.m in Sources */,
 				6B85C95E1E5790740082A62C /* ExchangeModuleConfigurator.m in Sources */,
 				3FC120EB1E5A0D8300A834BE /* User+CoreDataClass.m in Sources */,
 				6B85C94D1E578E4B0082A62C /* ExchangeViewController.m in Sources */,
@@ -869,6 +910,7 @@
 				3FC120CA1E59F98D00A834BE /* CurrenciesParser.m in Sources */,
 				3FC1210E1E5A14B600A834BE /* User+FetchRequests.m in Sources */,
 				3FEDABD31E59D76600D3C0A8 /* CurrencyViewController.m in Sources */,
+				3F03361A1E5B4E80009FD37E /* CurrencyTextFormatter.m in Sources */,
 				3FC120F11E5A0D8300A834BE /* Wallet+CoreDataProperties.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

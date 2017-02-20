@@ -4,6 +4,7 @@
 
 @protocol ExchangeInteractorInput <NSObject>
 
+- (void)startFetchingRatesTask;
 - (void)fetchDefaultUser;
 - (void)savePonsoUser:(PONSO_User *)ponsoUser;
 

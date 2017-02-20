@@ -5,9 +5,11 @@
 
 - (void)viewIsReady;
 
+//User actions
+- (void)userChoosedToRetryToUpdateCurrencies;
+
 //Fetching Subviews
 - (void)makeFromCurrencyController;
 - (void)makeToCurrencyController;
-- (void)makeCurrencyRateView;
 
 @end

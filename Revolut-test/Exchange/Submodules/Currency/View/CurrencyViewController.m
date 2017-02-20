@@ -44,6 +44,8 @@
 
 - (void)p_setupToCurrencyInterface {
     UIView *overlay = [[UIView alloc] initWithFrame:self.view.frame];
+    overlay.userInteractionEnabled = NO;
+    overlay.translatesAutoresizingMaskIntoConstraints = NO;
     overlay.backgroundColor = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0.15];
     [self.view addSubview:overlay];
     NSDictionary *views = @{@"overlay" : overlay};
