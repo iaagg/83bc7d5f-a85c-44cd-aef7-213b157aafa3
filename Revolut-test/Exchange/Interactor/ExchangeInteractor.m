@@ -9,6 +9,7 @@
 #import "PONSO_UserParser.h"
 #import "UserSaver.h"
 #import "NetworkClient.h"
+#import "RatesMaker.h"
 
 static NSString * const kRevolutDefaultUsername = @"defaultRevolutUser";
 static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
@@ -66,13 +67,17 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
 - (void)makeCurrencyRateFromCurrency:(PONSO_Currency *)fromCurrency
                           toCurrency:(PONSO_Currency *)toCurrency
                  withCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates {
-    
+    CurrencyRate *rate = [RatesMaker currencyRateFromCurrency:fromCurrency
+                                                   toCurrency:toCurrency
+                                          withCurrenciesRates:currenciesRates];
+    [_output didMakeCurrencyRate:rate];
 }
 
 #pragma mark - CurrenciesParserDelegate
 
 - (void)parserDidParseCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates {
     [_output didFetchCurrenciesRates:currenciesRates];
+    [_output didFinishFetchingCurrenciesRates];
 }
 
 - (void)errorOccuredWhileParsing {

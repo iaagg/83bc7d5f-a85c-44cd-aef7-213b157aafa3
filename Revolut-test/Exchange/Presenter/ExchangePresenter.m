@@ -3,6 +3,8 @@
 #import "CurrencyModuleInput.h"
 #import "CurrencyViewController.h"
 #import "PONSO_User.h"
+#import "PONSO_Wallet.h"
+#import "PONSO_Currency.h"
 #import "CurrencyRateView.h"
 
 static NSString * const kRevolutExchangeStoryboardName = @"Exchange";
@@ -16,8 +18,8 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
 @property (weak, nonatomic) id<CurrencyModuleInput>     fromCurrencySubModule;
 @property (weak, nonatomic) id<CurrencyModuleInput>     toCurrencySubModule;
 @property (strong, nonatomic) NSArray<NSDictionary *>   *currenciesRates;
-@property (assign, nonatomic) NSInteger                 currentFromCurrency;
-@property (assign, nonatomic) NSInteger                 currentToCurrency;
+@property (assign, nonatomic) NSInteger                 currentFromCurrencyIndex;
+@property (assign, nonatomic) NSInteger                 currentToCurrencyIndex;
 
 @end
 
@@ -70,7 +72,15 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
 }
 
 - (void)didFinishFetchingCurrenciesRates {
-//    [_view setUpdatedCurrenciesRatesStateWith:<#(CurrencyRate *)#>];
+    [self p_performCurrencyRateUpdate];
+}
+
+- (void)didMakeCurrencyRate:(CurrencyRate *)currencyRate {
+    if (currencyRate) {
+        [_view setUpdatedCurrenciesRatesStateWith:currencyRate];
+    } else {
+        [_view setUpdatingCurrenciesRatesFailedState];
+    }
 }
 
 #pragma mark - CurrencyModuleOutput
@@ -78,18 +88,20 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
 - (void)userSwitchedToCurrencyWithIndex:(NSInteger)index currencyViewType:(CurrencyViewType)currencyViewType {
     switch (currencyViewType) {
         case FromCurrencyType: {
-            
+            _currentFromCurrencyIndex = index;
             break;
         }
             
         case ToCurrencyType: {
-            
+            _currentToCurrencyIndex = index;
             break;
         }
             
         default:
             break;
     }
+    
+    [self p_performCurrencyRateUpdate];
 }
 
 #pragma mark - Private methods
@@ -98,6 +110,16 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
     UIViewController *controller = [STORYBOARD instantiateViewControllerWithIdentifier:kRevolutCurrencyViewControllerSB_ID];
     CurrencyViewController *currencyController = (CurrencyViewController *)controller;
     return currencyController;
+}
+
+- (void)p_performCurrencyRateUpdate {
+    if (_currenciesRates) {
+        PONSO_Currency *fromCurrency = _user.wallet.currencies[_currentFromCurrencyIndex];
+        PONSO_Currency *toCurrency = _user.wallet.currencies[_currentToCurrencyIndex];
+        [_interactor makeCurrencyRateFromCurrency:fromCurrency
+                                       toCurrency:toCurrency
+                              withCurrenciesRates:_currenciesRates];
+    }
 }
 
 @end

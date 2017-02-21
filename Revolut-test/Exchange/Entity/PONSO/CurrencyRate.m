@@ -1,6 +1,9 @@
 
 #import "CurrencyRate.h"
 
+NSString * const kRevolutCurrencyTitleKey   = @"currency";
+NSString * const kRevolutCurrencyRateKey    = @"rate";
+
 @interface CurrencyRate ()
 
 @property (strong, nonatomic, readwrite) NSString  *fromCurrency;

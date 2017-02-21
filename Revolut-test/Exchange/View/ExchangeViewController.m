@@ -2,6 +2,7 @@
 #import "ExchangeViewController.h"
 #import "ExchangeNotificationsHandlerProtocol.h"
 #import "ExchangeNotificationsHandler.h"
+#import "UIView+DefaultConstraints.h"
 
 static NSString * const kRevolutCurrenciesRatesUpdatingFailedMessage = @"Error while updating currencies rates. Please, retry or wait for update";
 static NSString * const kRevolutRetryUpdateButtonTitle = @"Retry";
@@ -68,8 +69,7 @@ static NSString * const kRevolutWaitForUpdateButtonTitle = @"OK";
 #pragma mark - Private methods
 
 - (void)p_setupCurrencyRateView {
-    [_currencyRateViewContainer addSubview:_currencyRateView];
-    [self p_addToMarginsConstraintsFromView:_currencyRateView toView:_currencyRateViewContainer];
+    [_currencyRateViewContainer addToMarginsConstraintsForView:_currencyRateView];
 }
 
 - (void)p_fetchSubviews {
@@ -78,27 +78,13 @@ static NSString * const kRevolutWaitForUpdateButtonTitle = @"OK";
 }
 
 - (void)p_addFromCurrencyController:(UIViewController *)controller {
-    [self p_addToMarginsConstraintsFromView:controller.view toView:_fromCurrencyContainer];
+    [_fromCurrencyContainer addToMarginsConstraintsForView:controller.view];
     [self p_addChildViewController:controller];
 }
 
 - (void)p_addToCurrencyController:(UIViewController *)controller {
-    [self p_addToMarginsConstraintsFromView:controller.view toView:_toCurrencyContainer];
+    [_toCurrencyContainer addToMarginsConstraintsForView:controller.view];
     [self p_addChildViewController:controller];
-}
-
-- (void)p_addToMarginsConstraintsFromView:(UIView *)fromView toView:(UIView *)toView {
-    [toView addSubview:fromView];
-    fromView.translatesAutoresizingMaskIntoConstraints = NO;
-    NSDictionary *views = @{@"subview" : fromView};
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|"
-                                                                      options:NSLayoutFormatAlignAllCenterY
-                                                                      metrics:nil
-                                                                        views:views]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]|"
-                                                                      options:NSLayoutFormatAlignAllCenterX
-                                                                      metrics:nil
-                                                                        views:views]];
 }
 
 - (void)p_addChildViewController:(UIViewController *)child {

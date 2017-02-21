@@ -3,9 +3,6 @@
 #import "CurrenciesParserDelegate.h"
 #import "CurrenciesParserProtocol.h"
 
-extern NSString * const kRevolutCurrencyTitleKey;
-extern NSString * const kRevolutCurrencyRateKey;
-
 @class Currency;
 
 @interface CurrenciesParser : NSObject <CurrenciesParserProtocol>

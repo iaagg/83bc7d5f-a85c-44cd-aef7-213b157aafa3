@@ -17,6 +17,8 @@
 		3F0336291E5B8E5A009FD37E /* CurrencyRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0336271E5B8E5A009FD37E /* CurrencyRate.m */; };
 		3F03362E1E5C3E86009FD37E /* RatesMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F03362D1E5C3E86009FD37E /* RatesMaker.m */; };
 		3F03362F1E5C3E86009FD37E /* RatesMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F03362D1E5C3E86009FD37E /* RatesMaker.m */; };
+		3F0336521E5C6AD2009FD37E /* UIView+DefaultConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0336511E5C6AD2009FD37E /* UIView+DefaultConstraints.m */; };
+		3F0336531E5C6AD2009FD37E /* UIView+DefaultConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0336511E5C6AD2009FD37E /* UIView+DefaultConstraints.m */; };
 		3FC1209B1E59DF5C00A834BE /* CurrencyCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC1209A1E59DF5C00A834BE /* CurrencyCollectionViewCell.m */; };
 		3FC1209C1E59DF5C00A834BE /* CurrencyCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC1209A1E59DF5C00A834BE /* CurrencyCollectionViewCell.m */; };
 		3FC120A01E59E06200A834BE /* CurrencyCollectionViewDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC1209F1E59E06200A834BE /* CurrencyCollectionViewDataManager.m */; };
@@ -126,6 +128,8 @@
 		3F03362A1E5C30FA009FD37E /* CurrenciesViewTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrenciesViewTypes.h; sourceTree = "<group>"; };
 		3F03362C1E5C3E86009FD37E /* RatesMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RatesMaker.h; sourceTree = "<group>"; };
 		3F03362D1E5C3E86009FD37E /* RatesMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RatesMaker.m; sourceTree = "<group>"; };
+		3F0336501E5C6AD2009FD37E /* UIView+DefaultConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DefaultConstraints.h"; sourceTree = "<group>"; };
+		3F0336511E5C6AD2009FD37E /* UIView+DefaultConstraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DefaultConstraints.m"; sourceTree = "<group>"; };
 		3FC120991E59DF5C00A834BE /* CurrencyCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyCollectionViewCell.h; sourceTree = "<group>"; };
 		3FC1209A1E59DF5C00A834BE /* CurrencyCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyCollectionViewCell.m; sourceTree = "<group>"; };
 		3FC1209E1E59E06200A834BE /* CurrencyCollectionViewDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyCollectionViewDataManager.h; sourceTree = "<group>"; };
@@ -275,6 +279,15 @@
 				3F03362D1E5C3E86009FD37E /* RatesMaker.m */,
 			);
 			path = RatesMaker;
+			sourceTree = "<group>";
+		};
+		3F03364F1E5C6A89009FD37E /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				3F0336501E5C6AD2009FD37E /* UIView+DefaultConstraints.h */,
+				3F0336511E5C6AD2009FD37E /* UIView+DefaultConstraints.m */,
+			);
+			path = Categories;
 			sourceTree = "<group>";
 		};
 		3FC120981E59DF0900A834BE /* Subviews */ = {
@@ -568,6 +581,7 @@
 		6B85C9071E5779C20082A62C /* Revolut-test */ = {
 			isa = PBXGroup;
 			children = (
+				3F03364F1E5C6A89009FD37E /* Categories */,
 				3FEDAB5E1E59AAA200D3C0A8 /* DataBase */,
 				6B85C9431E578D680082A62C /* Services */,
 				6B85C93B1E578BBF0082A62C /* Exchange */,
@@ -850,6 +864,7 @@
 				3FEDAB511E59969000D3C0A8 /* ExchangeNotificationsHandler.m in Sources */,
 				3F03362E1E5C3E86009FD37E /* RatesMaker.m in Sources */,
 				3F0336281E5B8E5A009FD37E /* CurrencyRate.m in Sources */,
+				3F0336521E5C6AD2009FD37E /* UIView+DefaultConstraints.m in Sources */,
 				3F0336191E5B4E80009FD37E /* CurrencyTextFormatter.m in Sources */,
 				3FEDABE01E59D89F00D3C0A8 /* CurrencyInteractor.m in Sources */,
 				3FC120A01E59E06200A834BE /* CurrencyCollectionViewDataManager.m in Sources */,
@@ -930,6 +945,7 @@
 				3FEDABD31E59D76600D3C0A8 /* CurrencyViewController.m in Sources */,
 				3F03361A1E5B4E80009FD37E /* CurrencyTextFormatter.m in Sources */,
 				3FC120F11E5A0D8300A834BE /* Wallet+CoreDataProperties.m in Sources */,
+				3F0336531E5C6AD2009FD37E /* UIView+DefaultConstraints.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

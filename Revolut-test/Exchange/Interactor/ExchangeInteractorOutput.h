@@ -1,6 +1,6 @@
 
 #import <Foundation/Foundation.h>
-@class PONSO_User;
+@class PONSO_User, CurrencyRate;
 
 @protocol ExchangeInteractorOutput <NSObject>
 
@@ -9,5 +9,7 @@
 - (void)didFetchCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates;
 - (void)didFailedFetchingCurrenciesRates;
 - (void)didFinishFetchingCurrenciesRates;
+
+- (void)didMakeCurrencyRate:(CurrencyRate *)currencyRate;
 
 @end

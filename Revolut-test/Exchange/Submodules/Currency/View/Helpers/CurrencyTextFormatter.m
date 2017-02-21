@@ -39,10 +39,10 @@ static NSInteger const kRevolutCountOfLastRateDigitsToBeResized = 2;
 - (NSAttributedString *)makeRateStringWithFromCurrency:(NSString *)fromCurrency
                                             toCurrency:(NSString *)toCurrency
                                                   rate:(double)rate
-                                             labelFont:(UIFont *)font{
+                                             labelFont:(UIFont *)font {
     
     NSDictionary *attributes = @{NSFontAttributeName: font};
-    NSString *outputString = [NSString stringWithFormat:@"%@1 = %@%.4f", fromCurrency, fromCurrency, rate];
+    NSString *outputString = [NSString stringWithFormat:@"%@1 = %@%.4f", fromCurrency, toCurrency, rate];
     NSMutableAttributedString *attrOutputString = [[NSMutableAttributedString alloc] initWithString:outputString attributes:attributes];
     
     UIFont *symbolFont = [font fontWithSize:kRevolutCurrencySymbolFontSizeInNavigationBar];

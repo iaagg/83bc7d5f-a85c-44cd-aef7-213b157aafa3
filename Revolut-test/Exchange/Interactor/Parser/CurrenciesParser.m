@@ -4,16 +4,16 @@
 #import "NSManagedObject+Creating.h"
 #import "Currency+CoreDataClass.h"
 #import "StackFactory.h"
+#import "CurrencyRate.h"
 
 #define CURRENCIES  @"currencies"
 #define ABBR        @"abbr"
 #define SYM         @"sym"
 #define AMOUNT      @"amount"
 
-static NSString * const kRevolutSeedCurrencies = @"CurrenciesSeeds";
+#define EUR_CURRENCY_RATE_DICT  @{kRevolutCurrencyTitleKey : @"EUR", kRevolutCurrencyRateKey : @1}
 
-NSString * const kRevolutCurrencyTitleKey   = @"currency";
-NSString * const kRevolutCurrencyRateKey    = @"rate";
+static NSString * const kRevolutSeedCurrencies = @"CurrenciesSeeds";
 
 @interface CurrenciesParser () <NSXMLParserDelegate>
 
@@ -57,6 +57,7 @@ NSString * const kRevolutCurrencyRateKey    = @"rate";
 }
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
+    [_currenciesRates addObject:EUR_CURRENCY_RATE_DICT];
     [_delegate parserDidParseCurrenciesRates:_currenciesRates];
     _xmlParser = nil;
     _currenciesRates = nil;

@@ -1,6 +1,9 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const kRevolutCurrencyTitleKey;
+extern NSString * const kRevolutCurrencyRateKey;
+
 @interface CurrencyRate : NSObject
 
 @property (strong, nonatomic, readonly) NSString  *fromCurrency;

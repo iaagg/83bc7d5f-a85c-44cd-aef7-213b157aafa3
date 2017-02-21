@@ -49,6 +49,8 @@
 #pragma mark - Private mathods
 
 - (void)p_setupInterfaceWithViewType:(CurrencyViewType)viewType {
+    _viewType = viewType;
+    
     switch (viewType) {
         case ToCurrencyType: {
             [self p_setupToCurrencyInterface];
