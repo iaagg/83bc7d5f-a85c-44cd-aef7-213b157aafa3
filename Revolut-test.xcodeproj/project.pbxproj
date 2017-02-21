@@ -1089,6 +1089,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "${PROJECT_DIR}/Revolut-test/Revolut-test_PrefixHeader.pch";
 				INFOPLIST_FILE = "Revolut-test/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "AGG.Revolut-test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1103,6 +1104,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "${PROJECT_DIR}/Revolut-test/Revolut-test_PrefixHeader.pch";
 				INFOPLIST_FILE = "Revolut-test/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "AGG.Revolut-test";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -75,9 +75,17 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
     [self p_performCurrencyRateUpdate];
 }
 
-- (void)didMakeCurrencyRate:(CurrencyRate *)currencyRate {
+- (void)didMakeExchangeFromCurrencyRate:(CurrencyRate *)currencyRate {
     if (currencyRate) {
         [_view setUpdatedCurrenciesRatesStateWith:currencyRate];
+    } else {
+        [_view setUpdatingCurrenciesRatesFailedState];
+    }
+}
+
+- (void)didMakeExchangeToCurrencyRate:(CurrencyRate *)currencyRate {
+    if (currencyRate) {
+        [_toCurrencySubModule updateCurrencyRateLabelWithRate:currencyRate];
     } else {
         [_view setUpdatingCurrenciesRatesFailedState];
     }
@@ -116,9 +124,12 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
     if (_currenciesRates) {
         PONSO_Currency *fromCurrency = _user.wallet.currencies[_currentFromCurrencyIndex];
         PONSO_Currency *toCurrency = _user.wallet.currencies[_currentToCurrencyIndex];
-        [_interactor makeCurrencyRateFromCurrency:fromCurrency
-                                       toCurrency:toCurrency
-                              withCurrenciesRates:_currenciesRates];
+        [_interactor makeExchangeFromCurrencyRateFromCurrency:fromCurrency
+                                                   toCurrency:toCurrency
+                                          withCurrenciesRates:_currenciesRates];
+        [_interactor makeExchangeToCurrencyRateFromCurrency:toCurrency
+                                                 toCurrency:fromCurrency
+                                        withCurrenciesRates:_currenciesRates];
     }
 }
 

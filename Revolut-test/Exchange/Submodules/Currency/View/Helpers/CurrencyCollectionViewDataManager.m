@@ -3,6 +3,7 @@
 #import "CurrencyCollectionViewCell.h"
 #import "PONSO_Currency.h"
 #import "CurrencyTextFormatter.h"
+#import "CurrencyRate.h"
 
 static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrencyCollectionViewCell";
 
@@ -22,6 +23,13 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     }
     
     return self;
+}
+
+#pragma mark - CurrencyCollectionViewDataManagerProtocol
+
+- (void)setRate:(CurrencyRate *)rate {
+    _rate = rate;
+    [_collectionView reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -52,6 +60,7 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     if ([self p_isPageSwitchedWithOffset:offset]) {
         NSIndexPath *indexOfPage = [self p_currentPage];
         [self p_switchToPageWithIndexPath:indexOfPage];
+        [self p_focusOnCurrencyValueInCellWithIndex:indexOfPage];
         [_delegate switchedToCurrencyWithIndex:indexOfPage.item];
     }
 }
@@ -94,6 +103,13 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     [_delegate switchedToCurrencyWithIndex:indexPath.item];
 }
 
+- (void)p_focusOnCurrencyValueInCellWithIndex:(NSIndexPath *)indexPath {
+    if (_viewType == FromCurrencyType) {
+        CurrencyCollectionViewCell *cell = (CurrencyCollectionViewCell *)([_collectionView cellForItemAtIndexPath:indexPath]);
+        [cell.value becomeFirstResponder];
+    }
+}
+
 - (NSInteger)p_numberOfCurrencies {
     NSArray *currencies =  _dataSource.firstObject;
     return currencies.count;
@@ -108,6 +124,19 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     cell.depositLabel.attributedText = [[CurrencyTextFormatter shared] makeDepositStringWithAmount:currency.amount
                                                                                             symbol:currency.symbol
                                                                                          labelFont:cell.depositLabel.font];
+    
+    //Rate label
+    if (_rate) {
+        UIFont *labelFont = cell.currencyRateLabel.font;
+        cell.currencyRateLabel.attributedText = [[CurrencyTextFormatter shared] makeRateStringWithFromCurrency:_rate.fromCurrency toCurrency:_rate.toCurrency rate:_rate.rate labelFont:labelFont from:NO];
+    }
+    
+    //Value textfield
+    if (_viewType == ToCurrencyType) {
+        cell.value.userInteractionEnabled = NO;
+    } else {
+        [cell.value becomeFirstResponder];
+    }
 }
 
 - (CGFloat)p_pageWidth {

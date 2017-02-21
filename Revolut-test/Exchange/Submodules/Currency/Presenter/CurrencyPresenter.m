@@ -17,6 +17,10 @@
     _currencyViewType = currencyViewType;
 }
 
+- (void)updateCurrencyRateLabelWithRate:(CurrencyRate *)currencyRate {
+    [_view updateCurrencyRateLabelWithRate:currencyRate];
+}
+
 #pragma mark - CurrencyViewOutput
 
 - (void)module:(void (^)(id<CurrencyModuleInput>))module {

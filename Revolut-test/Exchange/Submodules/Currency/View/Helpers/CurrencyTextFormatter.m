@@ -6,7 +6,8 @@ static NSString * const kRevolutDepositStringPrefix = @"You have ";
 static NSInteger const kRevolutCurrencySymbolFontSize = 8;
 static NSInteger const kRevolutCurrencySymbolFontSizeInNavigationBar = 10;
 static NSInteger const kRevolutCurrencyRateLastDigitsFontSize = 6;
-static NSInteger const kRevolutCountOfLastRateDigitsToBeResized = 2;
+static NSInteger const kRevolutCountOfLastRateDigitsToBeResizedInNavigationBar = 2;
+static NSInteger const kRevolutCountOfLastRateDigitsToBeResizedInToCurrency = 0;
 
 @implementation CurrencyTextFormatter
 
@@ -39,13 +40,26 @@ static NSInteger const kRevolutCountOfLastRateDigitsToBeResized = 2;
 - (NSAttributedString *)makeRateStringWithFromCurrency:(NSString *)fromCurrency
                                             toCurrency:(NSString *)toCurrency
                                                   rate:(double)rate
-                                             labelFont:(UIFont *)font {
+                                             labelFont:(UIFont *)font
+                                                  from:(BOOL)from {
     
     NSDictionary *attributes = @{NSFontAttributeName: font};
-    NSString *outputString = [NSString stringWithFormat:@"%@1 = %@%.4f", fromCurrency, toCurrency, rate];
-    NSMutableAttributedString *attrOutputString = [[NSMutableAttributedString alloc] initWithString:outputString attributes:attributes];
+    NSString *outputString;
+    UIFont *symbolFont;
+    NSRange rangeOfLastDigitsToResize;
     
-    UIFont *symbolFont = [font fontWithSize:kRevolutCurrencySymbolFontSizeInNavigationBar];
+    //Special setup for different currency rate labels
+    if (from) {
+        outputString = [NSString stringWithFormat:@"%@1 = %@%.4f", fromCurrency, toCurrency, rate];
+        rangeOfLastDigitsToResize = NSMakeRange(outputString.length - kRevolutCountOfLastRateDigitsToBeResizedInNavigationBar, kRevolutCountOfLastRateDigitsToBeResizedInNavigationBar);
+
+        symbolFont = [font fontWithSize:kRevolutCurrencySymbolFontSizeInNavigationBar];
+    } else {
+        outputString = [NSString stringWithFormat:@"%@1 = %@%.2f", fromCurrency, toCurrency, rate];
+        rangeOfLastDigitsToResize = NSMakeRange(outputString.length - kRevolutCountOfLastRateDigitsToBeResizedInToCurrency, kRevolutCountOfLastRateDigitsToBeResizedInToCurrency);
+        symbolFont = [font fontWithSize:kRevolutCurrencySymbolFontSize];
+    }
+    NSMutableAttributedString *attrOutputString = [[NSMutableAttributedString alloc] initWithString:outputString attributes:attributes];
     
     //Changing font size of fromCurrency symbol
     NSRange rangeOfFromSymbol = [outputString rangeOfString:fromCurrency];
@@ -57,8 +71,7 @@ static NSInteger const kRevolutCountOfLastRateDigitsToBeResized = 2;
     
     //Changing font size of last rate digits
     UIFont *rateFont = [font fontWithSize:kRevolutCurrencyRateLastDigitsFontSize];
-    NSRange rangeOfLastDigits = NSMakeRange(outputString.length - kRevolutCountOfLastRateDigitsToBeResized, kRevolutCountOfLastRateDigitsToBeResized);
-    [attrOutputString addAttribute:NSFontAttributeName value:rateFont range:rangeOfLastDigits];
+    [attrOutputString addAttribute:NSFontAttributeName value:rateFont range:rangeOfLastDigitsToResize];
     
     
     return [attrOutputString copy];

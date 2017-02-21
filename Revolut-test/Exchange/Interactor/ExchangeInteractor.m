@@ -64,13 +64,22 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
     [UserSaver savePonsoUser:ponsoUser toCoreDataUser:user inBgContext:bgContext];
 }
 
-- (void)makeCurrencyRateFromCurrency:(PONSO_Currency *)fromCurrency
-                          toCurrency:(PONSO_Currency *)toCurrency
-                 withCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates {
+- (void)makeExchangeFromCurrencyRateFromCurrency:(PONSO_Currency *)fromCurrency
+                                      toCurrency:(PONSO_Currency *)toCurrency
+                             withCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates {
     CurrencyRate *rate = [RatesMaker currencyRateFromCurrency:fromCurrency
                                                    toCurrency:toCurrency
                                           withCurrenciesRates:currenciesRates];
-    [_output didMakeCurrencyRate:rate];
+    [_output didMakeExchangeFromCurrencyRate:rate];
+}
+
+- (void)makeExchangeToCurrencyRateFromCurrency:(PONSO_Currency *)fromCurrency
+                                    toCurrency:(PONSO_Currency *)toCurrency
+                           withCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates {
+    CurrencyRate *rate = [RatesMaker currencyRateFromCurrency:fromCurrency
+                                                   toCurrency:toCurrency
+                                          withCurrenciesRates:currenciesRates];
+    [_output didMakeExchangeToCurrencyRate:rate];
 }
 
 #pragma mark - CurrenciesParserDelegate

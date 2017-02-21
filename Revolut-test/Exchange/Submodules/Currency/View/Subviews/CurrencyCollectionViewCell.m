@@ -3,4 +3,10 @@
 
 @implementation CurrencyCollectionViewCell
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    _currencyRateLabel.text = @"";
+    _depositLabel.text = @"";
+}
+
 @end

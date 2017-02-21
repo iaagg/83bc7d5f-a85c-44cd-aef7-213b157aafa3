@@ -22,6 +22,7 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
+    [_collectionView layoutSubviews];
     [_dataManager switchToPageWithIndex:_currentCurrencyIndex];
 }
 
@@ -36,6 +37,10 @@
 
 - (void)didMakeDataSourceForCurrencyCollectionView:(NSArray *)dataSource {
     [self p_setupCollectionViewWithDataSorce:dataSource];
+}
+
+- (void)updateCurrencyRateLabelWithRate:(CurrencyRate *)currencyRate {
+    _dataManager.rate = currencyRate;
 }
 
 #pragma mark - CurrencyCollectionViewDataManagerDelegate
@@ -62,6 +67,8 @@
 }
 
 - (void)p_setupToCurrencyInterface {
+    
+    //Overlay
     UIView *overlay = [[UIView alloc] initWithFrame:self.view.frame];
     overlay.userInteractionEnabled = NO;
     overlay.translatesAutoresizingMaskIntoConstraints = NO;
@@ -85,6 +92,7 @@
 - (void)p_setupCollectionViewWithDataSorce:(NSArray *)dataSorce {
     _dataManager = [[CurrencyCollectionViewDataManager alloc] initWithDelegate:self dataSource:dataSorce];
     _dataManager.collectionView = _collectionView;
+    _dataManager.viewType = _viewType;
     _collectionView.dataSource = _dataManager;
     _collectionView.delegate = _dataManager;
 }

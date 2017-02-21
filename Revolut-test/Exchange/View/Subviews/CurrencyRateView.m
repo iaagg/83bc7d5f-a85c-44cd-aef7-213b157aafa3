@@ -42,7 +42,7 @@
     _rateLabel.attributedText = [[CurrencyTextFormatter shared] makeRateStringWithFromCurrency:currencyRate.fromCurrency
                                                                                     toCurrency:currencyRate.toCurrency
                                                                                           rate:currencyRate.rate
-                                                                                     labelFont:labelFont];
+                                                                                     labelFont:labelFont from:YES];
 }
 
 #pragma mark - Private methods

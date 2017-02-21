@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -48,7 +49,7 @@
                                         </state>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vsB-8P-idk">
-                                        <rect key="frame" x="98" y="0.0" width="179" height="44"/>
+                                        <rect key="frame" x="98" y="4" width="179" height="36"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
@@ -61,30 +62,30 @@
                                     <constraint firstAttribute="height" constant="44" id="ZEE-mR-Ag5"/>
                                     <constraint firstItem="qlQ-Bk-DIN" firstAttribute="top" secondItem="grX-zO-5I7" secondAttribute="top" id="bVG-K5-c1h"/>
                                     <constraint firstItem="vsB-8P-idk" firstAttribute="leading" secondItem="qlQ-Bk-DIN" secondAttribute="trailing" constant="8" id="bm6-ex-sqg"/>
-                                    <constraint firstAttribute="bottom" secondItem="vsB-8P-idk" secondAttribute="bottom" id="gSU-tv-Zd4"/>
+                                    <constraint firstAttribute="bottom" secondItem="vsB-8P-idk" secondAttribute="bottom" constant="4" id="gSU-tv-Zd4"/>
                                     <constraint firstItem="mHo-q2-7pB" firstAttribute="leading" secondItem="vsB-8P-idk" secondAttribute="trailing" constant="8" id="irZ-Uh-Fy5"/>
                                     <constraint firstItem="mHo-q2-7pB" firstAttribute="top" secondItem="grX-zO-5I7" secondAttribute="top" id="nrd-ud-Vsy"/>
-                                    <constraint firstItem="vsB-8P-idk" firstAttribute="top" secondItem="grX-zO-5I7" secondAttribute="top" id="rKw-L3-M2F"/>
+                                    <constraint firstItem="vsB-8P-idk" firstAttribute="top" secondItem="grX-zO-5I7" secondAttribute="top" constant="4" id="rKw-L3-M2F"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zl9-5n-W7B">
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Rl-I8-fAT">
-                                        <rect key="frame" x="0.0" y="311.5" width="375" height="311.5"/>
-                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CR4-gA-GYp">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="311.5"/>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Rl-I8-fAT">
+                                        <rect key="frame" x="0.0" y="311.5" width="375" height="311.5"/>
+                                    </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="3Rl-I8-fAT" firstAttribute="top" secondItem="CR4-gA-GYp" secondAttribute="bottom" id="Bge-YU-dpq"/>
+                                    <constraint firstItem="CR4-gA-GYp" firstAttribute="height" secondItem="Zl9-5n-W7B" secondAttribute="height" multiplier="0.5" id="B2B-N1-8Et"/>
                                     <constraint firstItem="CR4-gA-GYp" firstAttribute="top" secondItem="Zl9-5n-W7B" secondAttribute="top" id="E76-f5-zUX"/>
                                     <constraint firstItem="CR4-gA-GYp" firstAttribute="leading" secondItem="Zl9-5n-W7B" secondAttribute="leading" id="McB-1Q-Amu"/>
                                     <constraint firstAttribute="trailing" secondItem="CR4-gA-GYp" secondAttribute="trailing" id="NjK-cB-9Zt"/>
                                     <constraint firstAttribute="trailing" secondItem="3Rl-I8-fAT" secondAttribute="trailing" id="YyZ-79-dix"/>
-                                    <constraint firstItem="CR4-gA-GYp" firstAttribute="height" secondItem="3Rl-I8-fAT" secondAttribute="height" id="Zf1-Zh-RYm"/>
                                     <constraint firstAttribute="bottom" secondItem="3Rl-I8-fAT" secondAttribute="bottom" id="gVf-m2-w91"/>
+                                    <constraint firstItem="3Rl-I8-fAT" firstAttribute="height" secondItem="Zl9-5n-W7B" secondAttribute="height" multiplier="0.5" id="ihh-sO-qQz"/>
                                     <constraint firstItem="3Rl-I8-fAT" firstAttribute="leading" secondItem="Zl9-5n-W7B" secondAttribute="leading" id="lgb-8W-T2O"/>
                                 </constraints>
                             </view>
@@ -108,6 +109,7 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="cancelButton" destination="qlQ-Bk-DIN" id="wZw-el-iGn"/>
+                        <outlet property="currenciesContainerBottomConstraint" destination="tb2-8t-GPC" id="CSh-g0-Cau"/>
                         <outlet property="currencyRateView" destination="tFX-gs-4Bf" id="uwu-El-RMz"/>
                         <outlet property="currencyRateViewContainer" destination="vsB-8P-idk" id="dyE-hP-grd"/>
                         <outlet property="exchangeButton" destination="mHo-q2-7pB" id="0Ok-Ua-lpu"/>
@@ -237,7 +239,7 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="49i-Kj-ugS">
                                                     <rect key="frame" x="187.5" y="0.0" width="187.5" height="338"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="currency rate" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cuy-U3-w5z">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cuy-U3-w5z">
                                                             <rect key="frame" x="7.5" y="181" width="150" height="15"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="15" id="Nax-BZ-DTj"/>
@@ -253,7 +255,7 @@
                                                             </constraints>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="decimalPad"/>
                                                         </textField>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

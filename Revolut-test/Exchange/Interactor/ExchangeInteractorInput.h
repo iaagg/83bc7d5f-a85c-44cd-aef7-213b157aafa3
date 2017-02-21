@@ -9,8 +9,12 @@
 - (void)fetchDefaultUser;
 - (void)savePonsoUser:(PONSO_User *)ponsoUser;
 
-- (void)makeCurrencyRateFromCurrency:(PONSO_Currency *)fromCurrency
-                          toCurrency:(PONSO_Currency *)toCurrency
-                 withCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates;
+- (void)makeExchangeFromCurrencyRateFromCurrency:(PONSO_Currency *)fromCurrency
+                                      toCurrency:(PONSO_Currency *)toCurrency
+                             withCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates;
+
+- (void)makeExchangeToCurrencyRateFromCurrency:(PONSO_Currency *)fromCurrency
+                                    toCurrency:(PONSO_Currency *)toCurrency
+                           withCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates;
 
 @end

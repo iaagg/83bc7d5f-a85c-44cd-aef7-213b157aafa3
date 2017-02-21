@@ -15,7 +15,7 @@ static NSString * const kRevolutWaitForUpdateButtonTitle = @"OK";
 @property (weak, nonatomic) IBOutlet UIView                             *currencyRateViewContainer;
 @property (weak, nonatomic) IBOutlet UIView                             *fromCurrencyContainer;
 @property (weak, nonatomic) IBOutlet UIView                             *toCurrencyContainer;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint                 *toCurrencyContainerBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint                 *currenciesContainerBottomConstraint;
 @property (weak, nonatomic) IBOutlet UIButton                           *exchangeButton;
 @property (weak, nonatomic) IBOutlet UIButton                           *cancelButton;
 
@@ -61,9 +61,9 @@ static NSString * const kRevolutWaitForUpdateButtonTitle = @"OK";
 
 #pragma mark - ExchangeNotificationHandlerDelegate
 
-- (void)keyboardOriginYReceived:(CGFloat)originY {
-    _toCurrencyContainerBottomConstraint.constant = originY;
-    [self.view layoutIfNeeded];
+- (void)keyboardHeightReceived:(CGFloat)originY {
+    _currenciesContainerBottomConstraint.constant = originY;
+    [self.view layoutSubviews];
 }
 
 #pragma mark - Private methods

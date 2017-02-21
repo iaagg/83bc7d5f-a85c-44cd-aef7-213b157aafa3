@@ -36,8 +36,8 @@
     if (userInfo) {
         NSValue *keyboardFrameValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
         CGRect keyboardFrame = [keyboardFrameValue CGRectValue];
-        CGFloat originY = keyboardFrame.origin.y;
-        [_delegate keyboardOriginYReceived:originY];
+        CGFloat height = keyboardFrame.size.height;
+        [_delegate keyboardHeightReceived:height];
     }
 }
 

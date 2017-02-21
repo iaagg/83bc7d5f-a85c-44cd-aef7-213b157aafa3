@@ -10,6 +10,7 @@
 - (void)didFailedFetchingCurrenciesRates;
 - (void)didFinishFetchingCurrenciesRates;
 
-- (void)didMakeCurrencyRate:(CurrencyRate *)currencyRate;
+- (void)didMakeExchangeFromCurrencyRate:(CurrencyRate *)currencyRate;
+- (void)didMakeExchangeToCurrencyRate:(CurrencyRate *)currencyRate;
 
 @end

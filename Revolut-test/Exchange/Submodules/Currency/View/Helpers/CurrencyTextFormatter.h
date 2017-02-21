@@ -12,6 +12,7 @@
 - (NSAttributedString *)makeRateStringWithFromCurrency:(NSString *)fromCurrency
                                             toCurrency:(NSString *)toCurrency
                                                   rate:(double)rate
-                                             labelFont:(UIFont *)font;
+                                             labelFont:(UIFont *)font
+                                                  from:(BOOL)from;
 
 @end

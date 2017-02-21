@@ -3,6 +3,6 @@
 
 @protocol ExchangeNotificationsHandlerDelegate <NSObject>
 
-- (void)keyboardOriginYReceived:(CGFloat)originY;
+- (void)keyboardHeightReceived:(CGFloat)originY;
 
 @end
