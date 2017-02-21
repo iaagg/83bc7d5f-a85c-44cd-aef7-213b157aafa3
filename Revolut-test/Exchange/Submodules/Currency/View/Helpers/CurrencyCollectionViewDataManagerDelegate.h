@@ -3,4 +3,6 @@
 
 @protocol CurrencyCollectionViewDataManagerDelegate <NSObject>
 
+- (void)switchedToCurrencyWithIndex:(NSInteger)index;
+
 @end

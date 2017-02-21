@@ -46,7 +46,15 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
 
 #pragma mark - UICollectionViewDelegate
 
-
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat offset = scrollView.contentOffset.x;
+    
+    if ([self p_isPageSwitchedWithOffset:offset]) {
+        NSIndexPath *indexOfPage = [self p_currentPage];
+        [self p_switchToPageWithIndexPath:indexOfPage];
+        [_delegate switchedToCurrencyWithIndex:indexOfPage.item];
+    }
+}
 
 #pragma mark - UICollectionViewFlowLayout
 
@@ -54,7 +62,42 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     return collectionView.bounds.size;
 }
 
+#pragma mark - Navigation
+
+- (void)switchToPageWithIndex:(NSInteger)index {
+    
+    if (_dataSource) {
+        NSIndexPath *pageIndex;
+        
+        if (index) {
+            pageIndex = [NSIndexPath indexPathForItem:index inSection:1];
+        } else {
+            pageIndex = [NSIndexPath indexPathForItem:0 inSection:1];
+        }
+        
+        if (_dataSource.count > 0) {
+            NSArray *currencies = _dataSource[1];
+            
+            if (currencies.count > pageIndex.item) {
+                [self p_switchToPageWithIndexPath:pageIndex];
+            }
+        }
+    }
+}
+
 #pragma mark - Private methods
+
+- (void)p_switchToPageWithIndexPath:(NSIndexPath *)indexPath {
+    [_collectionView scrollToItemAtIndexPath:indexPath
+                            atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                    animated:NO];
+    [_delegate switchedToCurrencyWithIndex:indexPath.item];
+}
+
+- (NSInteger)p_numberOfCurrencies {
+    NSArray *currencies =  _dataSource.firstObject;
+    return currencies.count;
+}
 
 - (void)p_setupCell:(CurrencyCollectionViewCell *)cell withCurrency:(PONSO_Currency *)currency {
     
@@ -65,6 +108,39 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     cell.depositLabel.attributedText = [[CurrencyTextFormatter shared] makeDepositStringWithAmount:currency.amount
                                                                                             symbol:currency.symbol
                                                                                          labelFont:cell.depositLabel.font];
+}
+
+- (CGFloat)p_pageWidth {
+    return _collectionView.bounds.size.width;
+}
+
+- (BOOL)p_isPageSwitchedWithOffset:(CGFloat)offset {
+    BOOL switched = false;
+    NSInteger intOffset = offset;
+    NSInteger intPageWidth = [self p_pageWidth];
+    
+    if (intOffset % intPageWidth == 0) {
+        switched = YES;
+    }
+    
+    return switched;
+}
+
+- (NSIndexPath *)p_currentPage {
+    NSInteger numberOfPages = [self p_numberOfCurrencies];
+    NSInteger carouselPage = _collectionView.contentOffset.x / [self p_pageWidth];
+    NSInteger pageInCentralSection;
+    
+    if (carouselPage < numberOfPages) {
+        pageInCentralSection = (carouselPage + numberOfPages) % numberOfPages;
+    } else if (carouselPage >= numberOfPages * 2) {
+        pageInCentralSection = (carouselPage - numberOfPages) % numberOfPages;
+    } else {
+        pageInCentralSection = carouselPage % numberOfPages;
+    }
+    
+    NSIndexPath *page = [NSIndexPath indexPathForItem:pageInCentralSection inSection:1];
+    return page;
 }
 
 @end

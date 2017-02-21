@@ -15,6 +15,8 @@ static NSString * const kRevolutWaitForUpdateButtonTitle = @"OK";
 @property (weak, nonatomic) IBOutlet UIView                             *fromCurrencyContainer;
 @property (weak, nonatomic) IBOutlet UIView                             *toCurrencyContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint                 *toCurrencyContainerBottomConstraint;
+@property (weak, nonatomic) IBOutlet UIButton                           *exchangeButton;
+@property (weak, nonatomic) IBOutlet UIButton                           *cancelButton;
 
 @end
 
@@ -31,14 +33,17 @@ static NSString * const kRevolutWaitForUpdateButtonTitle = @"OK";
 - (void)setupInitialState {
     _notificationsHandler = [[ExchangeNotificationsHandler alloc] initWithDelegate:self];
     [self p_fetchSubviews];
+    [self p_disableCancelButton];
 }
 
 - (void)setUpdatingCurrenciesRatesState {
     [_currencyRateView setUpdatingState];
+    [self p_disableExchangeButton];
 }
 
 - (void)setUpdatedCurrenciesRatesStateWith:(CurrencyRate *)rate {
     [_currencyRateView updateRateWithCurrencyRate:rate];
+    [self p_enableExchangeButton];
 }
 
 - (void)setUpdatingCurrenciesRatesFailedState {
@@ -114,6 +119,27 @@ static NSString * const kRevolutWaitForUpdateButtonTitle = @"OK";
     //OK action
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:kRevolutWaitForUpdateButtonTitle style:UIAlertActionStyleCancel handler:nil];
     [alert addAction:okAction];
+    
+    //Presenting
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)p_disableExchangeButton {
+    _exchangeButton.alpha = 0.5;
+    _exchangeButton.enabled = NO;
+    _exchangeButton.userInteractionEnabled = NO;
+}
+
+- (void)p_enableExchangeButton {
+    _exchangeButton.alpha = 1.0;
+    _exchangeButton.enabled = YES;
+    _exchangeButton.userInteractionEnabled = YES;
+}
+
+- (void)p_disableCancelButton {
+    _cancelButton.alpha = 0.5;
+    _cancelButton.enabled = NO;
+    _cancelButton.userInteractionEnabled = NO;
 }
 
 @end

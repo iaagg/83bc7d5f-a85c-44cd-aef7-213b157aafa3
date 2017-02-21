@@ -17,7 +17,7 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
 
 @property (weak, nonatomic) id<StackProtocol>               coreDataStack;
 @property (strong, nonatomic) id<CurrenciesParserProtocol>  currenciesParser;
-@property (weak, nonatomic) NSTimer                         *fecthRatesTimer;
+@property (weak, nonatomic) NSTimer                         *fetchRatesTimer;
 
 @end
 
@@ -37,7 +37,12 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
 - (void)startFetchingRatesTask {
     [_output didStartFetchingCurrenciesRates];
     [self p_fetchRatesData];
-    _fecthRatesTimer = [NSTimer scheduledTimerWithTimeInterval:kRevolutRatesRequestPeriod target:self selector:@selector(p_fetchRatesData) userInfo:nil repeats:YES];
+    _fetchRatesTimer = [NSTimer scheduledTimerWithTimeInterval:kRevolutRatesRequestPeriod target:self selector:@selector(p_fetchRatesData) userInfo:nil repeats:YES];
+}
+
+- (void)retryFetchingRates {
+    [_fetchRatesTimer invalidate];
+    [self startFetchingRatesTask];
 }
 
 - (void)fetchDefaultUser {
@@ -56,7 +61,12 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
     NSAssert(user == nil, @"Fatal error: user with uuid: %@ wasn't found in db", ponsoUser.uuid);
     
     [UserSaver savePonsoUser:ponsoUser toCoreDataUser:user inBgContext:bgContext];
+}
 
+- (void)makeCurrencyRateFromCurrency:(PONSO_Currency *)fromCurrency
+                          toCurrency:(PONSO_Currency *)toCurrency
+                 withCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates {
+    
 }
 
 #pragma mark - CurrenciesParserDelegate

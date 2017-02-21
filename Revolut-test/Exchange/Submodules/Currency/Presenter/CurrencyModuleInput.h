@@ -1,12 +1,8 @@
 
 #import <Foundation/Foundation.h>
 #import "CurrencyModuleOutput.h"
+#import "CurrenciesViewTypes.h"
 @class PONSO_Wallet;
-
-typedef NS_ENUM(NSInteger, CurrencyViewType) {
-    FromCurrencyType = 1,
-    ToCurrencyType = 2
-};
 
 @protocol CurrencyModuleInput <NSObject>
 

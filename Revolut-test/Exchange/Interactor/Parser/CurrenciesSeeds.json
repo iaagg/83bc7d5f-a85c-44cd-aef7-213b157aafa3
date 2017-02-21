@@ -4,12 +4,12 @@
                    "sym": 8364,
                    "amount": 100
                    }, {
-                   "abbr": "USD",
-                   "sym": 36,
-                   "amount": 100
-                   }, {
                    "abbr": "GBP",
                    "sym": 163,
+                   "amount": 100
+                   }, {
+                   "abbr": "USD",
+                   "sym": 36,
                    "amount": 100
                    }]
 }

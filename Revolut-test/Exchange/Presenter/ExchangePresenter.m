@@ -16,6 +16,8 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
 @property (weak, nonatomic) id<CurrencyModuleInput>     fromCurrencySubModule;
 @property (weak, nonatomic) id<CurrencyModuleInput>     toCurrencySubModule;
 @property (strong, nonatomic) NSArray<NSDictionary *>   *currenciesRates;
+@property (assign, nonatomic) NSInteger                 currentFromCurrency;
+@property (assign, nonatomic) NSInteger                 currentToCurrency;
 
 @end
 
@@ -46,7 +48,7 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
 }
 
 - (void)userChoosedToRetryToUpdateCurrencies {
-    //TODO:
+    [_interactor retryFetchingRates];
 }
 
 #pragma mark - ExchangeInteractorOutput
@@ -69,6 +71,25 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
 
 - (void)didFinishFetchingCurrenciesRates {
 //    [_view setUpdatedCurrenciesRatesStateWith:<#(CurrencyRate *)#>];
+}
+
+#pragma mark - CurrencyModuleOutput
+
+- (void)userSwitchedToCurrencyWithIndex:(NSInteger)index currencyViewType:(CurrencyViewType)currencyViewType {
+    switch (currencyViewType) {
+        case FromCurrencyType: {
+            
+            break;
+        }
+            
+        case ToCurrencyType: {
+            
+            break;
+        }
+            
+        default:
+            break;
+    }
 }
 
 #pragma mark - Private methods

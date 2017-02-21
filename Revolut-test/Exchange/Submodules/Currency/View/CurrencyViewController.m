@@ -6,8 +6,10 @@
 @interface CurrencyViewController () <CurrencyCollectionViewDataManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView                       *collectionView;
+@property (weak, nonatomic) IBOutlet UIPageControl                          *pageControl;
 @property (strong, nonatomic) id<CurrencyCollectionViewDataManagerProtocol> dataManager;
 @property (assign, nonatomic) CurrencyViewType                              viewType;
+@property (assign, nonatomic) NSInteger                                     currentCurrencyIndex;
 
 @end
 
@@ -18,15 +20,30 @@
     [_output viewIsReady];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [_dataManager switchToPageWithIndex:_currentCurrencyIndex];
+}
+
 #pragma mark - CurrencyViewInput
 
-- (void)setupInitialStateWithViewType:(CurrencyViewType)viewType {
+- (void)setupInitialStateWithViewType:(CurrencyViewType)viewType currencyIndex:(NSInteger)currencyIndex {
     [self p_setupInterfaceWithViewType:viewType];
     [_output makeDataSourceForCurrencyCollectionView];
+    _currentCurrencyIndex = currencyIndex;
+    _pageControl.currentPage = _currentCurrencyIndex;
 }
 
 - (void)didMakeDataSourceForCurrencyCollectionView:(NSArray *)dataSource {
     [self p_setupCollectionViewWithDataSorce:dataSource];
+}
+
+#pragma mark - CurrencyCollectionViewDataManagerDelegate
+
+- (void)switchedToCurrencyWithIndex:(NSInteger)index {
+    _currentCurrencyIndex = index;
+    _pageControl.currentPage = _currentCurrencyIndex;
+    [_output userSwitchedToCurrencyWithIndex:index currencyViewType:_viewType];
 }
 
 #pragma mark - Private mathods
@@ -65,6 +82,7 @@
 
 - (void)p_setupCollectionViewWithDataSorce:(NSArray *)dataSorce {
     _dataManager = [[CurrencyCollectionViewDataManager alloc] initWithDelegate:self dataSource:dataSorce];
+    _dataManager.collectionView = _collectionView;
     _collectionView.dataSource = _dataManager;
     _collectionView.delegate = _dataManager;
 }

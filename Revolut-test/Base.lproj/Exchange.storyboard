@@ -33,7 +33,7 @@
                                             <constraint firstAttribute="width" constant="82" id="BBj-Cq-qrq"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <state key="normal" title="Отменить">
+                                        <state key="normal" title="Cancel">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
@@ -107,8 +107,10 @@
                     <navigationItem key="navigationItem" id="wnv-Da-pSm"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="cancelButton" destination="qlQ-Bk-DIN" id="wZw-el-iGn"/>
                         <outlet property="currencyRateView" destination="tFX-gs-4Bf" id="uwu-El-RMz"/>
                         <outlet property="currencyRateViewContainer" destination="vsB-8P-idk" id="dyE-hP-grd"/>
+                        <outlet property="exchangeButton" destination="mHo-q2-7pB" id="0Ok-Ua-lpu"/>
                         <outlet property="fromCurrencyContainer" destination="CR4-gA-GYp" id="qlA-MQ-ofk"/>
                         <outlet property="toCurrencyContainer" destination="3Rl-I8-fAT" id="MCQ-L8-yfL"/>
                     </connections>
@@ -118,7 +120,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$1 = 59.6" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vi7-t2-67D">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vi7-t2-67D">
                             <rect key="frame" x="16" y="6" width="208" height="32"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -325,6 +327,7 @@
                     <size key="freeformSize" width="375" height="375"/>
                     <connections>
                         <outlet property="collectionView" destination="4iU-rA-zc2" id="J1M-tP-VYD"/>
+                        <outlet property="pageControl" destination="VQc-Yg-ouw" id="F4O-b4-skv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f4M-Gf-0lq" userLabel="First Responder" sceneMemberID="firstResponder"/>

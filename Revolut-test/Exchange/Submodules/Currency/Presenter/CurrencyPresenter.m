@@ -24,11 +24,15 @@
 }
 
 - (void)viewIsReady {
-    [_view setupInitialStateWithViewType:_currencyViewType];
+    [_view setupInitialStateWithViewType:_currencyViewType currencyIndex:0];
 }
 
 - (void)makeDataSourceForCurrencyCollectionView {
     [_interactor makeDataSourceForCurrencyCollectionViewWithWallet:_wallet];
+}
+
+- (void)userSwitchedToCurrencyWithIndex:(NSInteger)index currencyViewType:(CurrencyViewType)currencyViewType {
+    [_parentModule userSwitchedToCurrencyWithIndex:index currencyViewType:currencyViewType];
 }
 
 #pragma mark - CurrencyIntractorOutput
