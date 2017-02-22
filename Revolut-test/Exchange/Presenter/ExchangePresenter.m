@@ -136,6 +136,10 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
     [self p_updateExchangeResultWithValue:newValue];
 }
 
+- (void)exchangeValueExceedsDeposit:(BOOL)valueExceedsDeposit {
+    [_view exchangeValueExceedsDeposit:valueExceedsDeposit];
+}
+
 #pragma mark - Private methods
 
 - (void)p_updateExchangeResultWithValue:(NSNumber *)newValue {
@@ -151,13 +155,8 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
     }
 }
 
-- (void)p_setExchangingCurrencySavedValue:(NSNumber *)savedValue {
-    [_fromCurrencySubModule setExchangingCurrencySavedValue:savedValue];
-}
-
 - (void)p_refreshInterfaceDueToCurrenciesSwitching {
     [self p_performCurrencyRateUpdate];
-    [self p_setExchangingCurrencySavedValue:_exchangeValue];
     [self p_updateExchangeResultWithValue:_exchangeValue];
 }
 

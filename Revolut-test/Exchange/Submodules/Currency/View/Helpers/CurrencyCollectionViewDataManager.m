@@ -13,6 +13,7 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
 
 @property (weak, nonatomic) id<CurrencyCollectionViewDataManagerDelegate>   delegate;
 @property (strong, nonatomic) NSArray                                       *dataSource;
+@property (strong, nonatomic) NSNumber                                      *exchangeValue;
 
 @end
 
@@ -29,7 +30,11 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
 
 #pragma mark - CurrencyExchangeValueChangingDelegate
 
-- (void)userChangedEchangeValue:(NSNumber *)newValue {
+- (void)userChangedExchangeValue:(NSNumber *)newValue {
+    _exchangeValue = newValue;
+    [self p_reloadCentralSection];
+    [self p_focusOnCurrentCurrencyValue];
+    [self p_checkForExceedingTheDeposit];
     [_delegate currencyExchangeValueWasUpdated:newValue];
 }
 
@@ -37,7 +42,7 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
 
 - (void)setRate:(CurrencyRate *)rate {
     _rate = rate;
-    [_collectionView reloadData];
+    [self p_reloadCentralSection];
 }
 
 - (void)switchToPageWithIndex:(NSInteger)index {
@@ -66,24 +71,14 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CurrencyCollectionViewCell *cell = (CurrencyCollectionViewCell *)([_collectionView cellForItemAtIndexPath:currentPageIndex]);
-        cell.value.text = [self p_exchangeResultValueStringWithValue:value];
+        [cell.value setAttributedText:[self p_exchangeResultValueStringWithValue:value]];
     });
 }
 
-- (void)setExchangingCurrencySavedValue:(NSNumber *)savedValue {
-    NSIndexPath *currentPageIndex = [self p_currentPage];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        CurrencyCollectionViewCell *cell = (CurrencyCollectionViewCell *)([_collectionView cellForItemAtIndexPath:currentPageIndex]);
-        cell.value.text = [self p_exchangingValueStringWithValue:savedValue];
-    });
-}
-
-- (void)reloadCentralSection {
-    NSIndexSet *set = [NSIndexSet indexSetWithIndex:1];
-    [_collectionView reloadSections:set];
-    NSIndexPath *currentCurrency = [self p_currentPage];
-    [self p_focusOnCurrencyValueInCellWithIndex:currentCurrency];
+- (void)reloadAfterSuccessfulExchange {
+    _exchangeValue = nil;
+    [self p_reloadCentralSection];
+    [self p_focusOnCurrentCurrencyValue];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -126,6 +121,27 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
 
 #pragma mark - Private methods
 
+- (void)p_checkForExceedingTheDeposit {
+    NSIndexPath *currentCurrencyIndex = [self p_currentPage];
+    NSArray *currencies = _dataSource[1];
+    PONSO_Currency *currentCurrency = currencies[currentCurrencyIndex.item];
+    double exchangeValue = [_exchangeValue doubleValue];
+    BOOL depositExceeded = [self p_isExchangeLimitExceededFor:currentCurrency withExchangeValue:exchangeValue];
+    [_delegate exchangeValueExceedsDeposit:depositExceeded];
+}
+
+- (BOOL)p_isExchangeLimitExceededFor:(PONSO_Currency *)currency withExchangeValue:(double)exchangeValue {
+    BOOL isExchangeLimitExceeded = currency.amount < exchangeValue;
+    return isExchangeLimitExceeded;
+}
+
+- (void)p_reloadCentralSection {
+    NSIndexSet *set = [NSIndexSet indexSetWithIndex:1];
+    [UIView performWithoutAnimation:^{
+        [_collectionView reloadSections:set];
+    }];
+}
+
 - (void)p_handlePageShiftingInScrollView:(UIScrollView *)scrollView {
     CGFloat offset = scrollView.contentOffset.x;
     
@@ -152,6 +168,11 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     });
 }
 
+- (void)p_focusOnCurrentCurrencyValue {
+    NSIndexPath *currentCurrencyIndex = [self p_currentPage];
+    [self p_focusOnCurrencyValueInCellWithIndex:currentCurrencyIndex];
+}
+
 - (void)p_focusOnCurrencyValueInCellWithIndex:(NSIndexPath *)indexPath {
     if (_viewType == FromCurrencyType) {
         CurrencyCollectionViewCell *cell = (CurrencyCollectionViewCell *)([_collectionView cellForItemAtIndexPath:indexPath]);
@@ -170,14 +191,18 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     cell.currencyTitle.text = currency.title;
     
     //Deposit label
-    cell.depositLabel.attributedText = [[CurrencyTextFormatter shared] makeDepositStringWithAmount:currency.amount
-                                                                                            symbol:currency.symbol
-                                                                                         labelFont:cell.depositLabel.font];
+    double exchangeValue = [_exchangeValue doubleValue];
+    BOOL shouldHighlightDeposit = [self p_isExchangeLimitExceededFor:currency withExchangeValue:exchangeValue];
+    cell.depositLabel.attributedText = [CurrencyTextFormatter makeDepositStringWithAmount:currency.amount
+                                                                                   symbol:currency.symbol
+                                                                          shouldHighlight:shouldHighlightDeposit];
     
     //Rate label
     if (_rate) {
-        UIFont *labelFont = cell.currencyRateLabel.font;
-        cell.currencyRateLabel.attributedText = [[CurrencyTextFormatter shared] makeRateStringWithFromCurrency:_rate.fromCurrency toCurrency:_rate.toCurrency rate:_rate.rate labelFont:labelFont from:NO];
+        cell.currencyRateLabel.attributedText = [CurrencyTextFormatter makeRateStringWithFromCurrency:_rate.fromCurrency
+                                                                                           toCurrency:_rate.toCurrency
+                                                                                                 rate:_rate.rate
+                                                                                                 from:NO];
     }
     
     //Value textfield
@@ -186,7 +211,7 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     } else {
         cell.textFieldDelegateStrongReference = [[CurrencyValueTextfieldDelegate alloc] initWithValueChangingDelegate:self];
         cell.value.delegate = cell.textFieldDelegateStrongReference;
-//        [cell.value becomeFirstResponder];
+        [cell.value setAttributedText:[self p_exchangingValueStringWithValue:_exchangeValue]];
     }
 }
 
@@ -223,25 +248,23 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     return page;
 }
 
-- (NSString *)p_exchangingValueStringWithValue:(NSNumber *)value {
+- (NSAttributedString *)p_exchangingValueStringWithValue:(NSNumber *)value {
     
     if (!value) {
-        return @"";
+        return [[NSAttributedString alloc] initWithString:@""];
     }
     
-    NSString *valueString = [NSString stringWithFormat:@"%@", value];
-    NSString *outputString = [NSString stringWithFormat:@"%@%@", kRevolutFromCurrencyExchangeValuePrefix, valueString];
+    NSAttributedString *outputString = [CurrencyTextFormatter makeFromCurrencyValueStringWithValue:value];
     return outputString;
 }
 
-- (NSString *)p_exchangeResultValueStringWithValue:(NSNumber *)value {
+- (NSAttributedString *)p_exchangeResultValueStringWithValue:(NSNumber *)value {
     
     if (!value) {
-        return @"";
+        return [[NSAttributedString alloc] initWithString:@""];
     }
     
-    NSString *valueString = [NSString stringWithFormat:@"%.2f", [value doubleValue]];
-    NSString *outputString = [NSString stringWithFormat:@"%@%@", kRevolutToCurrencyExchangeValuePrefix, valueString];
+    NSAttributedString *outputString = [CurrencyTextFormatter makeToCurrencyValueStringWithValue:value];
     return outputString;
 }
 

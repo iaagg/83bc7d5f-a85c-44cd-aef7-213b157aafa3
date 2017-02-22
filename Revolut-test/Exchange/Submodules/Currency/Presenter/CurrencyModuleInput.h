@@ -12,6 +12,5 @@
 - (void)setupWithWallet:(PONSO_Wallet *)wallet currencyViewType:(CurrencyViewType)currencyViewType;
 - (void)updateCurrencyRateLabelWithRate:(CurrencyRate *)currencyRate;
 - (void)updateExchangeResultLabelWithValue:(NSNumber *)value;
-- (void)setExchangingCurrencySavedValue:(NSNumber *)savedValue;
 
 @end

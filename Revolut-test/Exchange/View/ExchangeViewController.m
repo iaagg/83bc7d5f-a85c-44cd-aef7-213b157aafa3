@@ -3,10 +3,7 @@
 #import "ExchangeNotificationsHandlerProtocol.h"
 #import "ExchangeNotificationsHandler.h"
 #import "UIView+DefaultConstraints.h"
-
-static NSString * const kRevolutCurrenciesRatesUpdatingFailedMessage = @"Error while updating currencies rates. Please, retry or wait for update";
-static NSString * const kRevolutRetryUpdateButtonTitle = @"Retry";
-static NSString * const kRevolutWaitForUpdateButtonTitle = @"OK";
+#import "AlertsManager.h"
 
 @interface ExchangeViewController ()
 
@@ -59,6 +56,14 @@ static NSString * const kRevolutWaitForUpdateButtonTitle = @"OK";
     [self p_addToCurrencyController:controller];
 }
 
+- (void)exchangeValueExceedsDeposit:(BOOL)valueExceedsDeposit {
+    if (valueExceedsDeposit) {
+        [self p_disableExchangeButton];
+    } else {
+        [self p_enableExchangeButton];
+    }
+}
+
 #pragma mark - ExchangeNotificationHandlerDelegate
 
 - (void)keyboardHeightReceived:(CGFloat)originY {
@@ -66,9 +71,9 @@ static NSString * const kRevolutWaitForUpdateButtonTitle = @"OK";
     [self.view layoutSubviews];
 }
 
-#pragma mark - Button actions
+#pragma mark - Buttons actions
 
-- (IBAction)exchangeButtonTapped:(UIButton *)button {
+- (IBAction)performExchange:(id)sender {
     [_output userChoosedToProcceedExchange];
 }
 
@@ -99,21 +104,7 @@ static NSString * const kRevolutWaitForUpdateButtonTitle = @"OK";
 }
 
 - (void)p_presentUpdatingFailedAlert {
-    __weak ExchangeViewController *weakSelf = self;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:kRevolutCurrenciesRatesUpdatingFailedMessage preferredStyle:UIAlertControllerStyleAlert];
-    
-    //Retry action
-    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:kRevolutRetryUpdateButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [weakSelf.output userChoosedToRetryToUpdateCurrencies];
-    }];
-    [alert addAction:retryAction];
-    
-    //OK action
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:kRevolutWaitForUpdateButtonTitle style:UIAlertActionStyleCancel handler:nil];
-    [alert addAction:okAction];
-    
-    //Presenting
-    [self presentViewController:alert animated:YES completion:nil];
+    [AlertsManager showUpdatingFailedAlertInController:self];
 }
 
 - (void)p_disableExchangeButton {

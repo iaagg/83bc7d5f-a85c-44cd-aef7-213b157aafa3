@@ -13,5 +13,6 @@
 
 //Exchanging
 - (void)currencyExchangeValueWasUpdated:(NSNumber *)newValue;
+- (void)exchangeValueExceedsDeposit:(BOOL)valueExceedsDeposit;
 
 @end

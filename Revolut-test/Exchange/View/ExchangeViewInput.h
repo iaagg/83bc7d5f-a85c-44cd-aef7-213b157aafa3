@@ -16,4 +16,7 @@
 - (void)didMakeFromCurrencyController:(UIViewController *)controller;
 - (void)didMakeToCurrencyController:(UIViewController *)controller;
 
+//Notifications
+- (void)exchangeValueExceedsDeposit:(BOOL)valueExceedsDeposit;
+
 @end

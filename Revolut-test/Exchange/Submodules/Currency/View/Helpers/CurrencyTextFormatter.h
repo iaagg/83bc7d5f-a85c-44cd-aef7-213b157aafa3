@@ -1,18 +1,21 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const kRevolutToCurrencyExchangeValuePrefix;
+extern NSString * const kRevolutFromCurrencyExchangeValuePrefix;
+
 @interface CurrencyTextFormatter : NSObject
 
-+ (instancetype)shared;
-
-- (NSAttributedString *)makeDepositStringWithAmount:(NSInteger)amount
++ (NSAttributedString *)makeDepositStringWithAmount:(double)amount
                                              symbol:(NSString *)symbol
-                                          labelFont:(UIFont *)font;
+                                    shouldHighlight:(BOOL)shouldHighlight;
 
-- (NSAttributedString *)makeRateStringWithFromCurrency:(NSString *)fromCurrency
++ (NSAttributedString *)makeRateStringWithFromCurrency:(NSString *)fromCurrency
                                             toCurrency:(NSString *)toCurrency
                                                   rate:(double)rate
-                                             labelFont:(UIFont *)font
                                                   from:(BOOL)from;
+
++ (NSAttributedString *)makeFromCurrencyValueStringWithValue:(NSNumber *)value;
++ (NSAttributedString *)makeToCurrencyValueStringWithValue:(NSNumber *)value;
 
 @end

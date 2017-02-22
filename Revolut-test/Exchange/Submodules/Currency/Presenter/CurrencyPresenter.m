@@ -25,12 +25,8 @@
     [_view updateExchangeResultLabelWithValue:value];
 }
 
-- (void)setExchangingCurrencySavedValue:(NSNumber *)savedValue {
-    [_view setExchangingCurrencySavedValue:savedValue];
-}
-
 - (void)reloadInterface {
-    [_view reloadInterface];
+    [_view reloadInterfaceAfterSuccessfulExchange];
 }
 
 #pragma mark - CurrencyViewOutput
@@ -53,6 +49,10 @@
 
 - (void)currencyExchangeValueWasUpdated:(NSNumber *)newValue {
     [_parentModule currencyExchangeValueWasUpdated:newValue];
+}
+
+- (void)exchangeValueExceedsDeposit:(BOOL)valueExceedsDeposit {
+    [_parentModule exchangeValueExceedsDeposit:valueExceedsDeposit];
 }
 
 #pragma mark - CurrencyIntractorOutput

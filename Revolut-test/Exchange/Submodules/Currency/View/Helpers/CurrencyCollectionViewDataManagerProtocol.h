@@ -15,7 +15,6 @@
 
 - (void)switchToPageWithIndex:(NSInteger)index;
 - (void)updateExchangeResultLabelWithValue:(NSNumber *)value;
-- (void)setExchangingCurrencySavedValue:(NSNumber *)savedValue;
-- (void)reloadCentralSection;
+- (void)reloadAfterSuccessfulExchange;
 
 @end

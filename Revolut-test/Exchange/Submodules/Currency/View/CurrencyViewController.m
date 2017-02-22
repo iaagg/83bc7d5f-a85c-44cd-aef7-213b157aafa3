@@ -35,8 +35,8 @@
     _pageControl.currentPage = _currentCurrencyIndex;
 }
 
-- (void)reloadInterface {
-    [_dataManager reloadCentralSection];
+- (void)reloadInterfaceAfterSuccessfulExchange {
+    [_dataManager reloadAfterSuccessfulExchange];
 }
 
 - (void)didMakeDataSourceForCurrencyCollectionView:(NSArray *)dataSource {
@@ -51,10 +51,6 @@
     [_dataManager updateExchangeResultLabelWithValue:value];
 }
 
-- (void)setExchangingCurrencySavedValue:(NSNumber *)savedValue {
-    [_dataManager setExchangingCurrencySavedValue:savedValue];
-}
-
 #pragma mark - CurrencyCollectionViewDataManagerDelegate
 
 - (void)switchedToCurrencyWithIndex:(NSInteger)index {
@@ -65,6 +61,10 @@
 
 - (void)currencyExchangeValueWasUpdated:(NSNumber *)newValue {
     [_output currencyExchangeValueWasUpdated:newValue];
+}
+
+- (void)exchangeValueExceedsDeposit:(BOOL)valueExceedsDeposit {
+    [_output exchangeValueExceedsDeposit:valueExceedsDeposit];
 }
 
 #pragma mark - Private mathods

@@ -77,6 +77,8 @@
 		3FEDABE51E59D8D600D3C0A8 /* CurrencyModuleConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEDABE31E59D8D600D3C0A8 /* CurrencyModuleConfigurator.m */; };
 		3FEDABE81E59D8EB00D3C0A8 /* CurrencyModuleInitializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEDABE71E59D8EB00D3C0A8 /* CurrencyModuleInitializer.m */; };
 		3FEDABE91E59D8EB00D3C0A8 /* CurrencyModuleInitializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEDABE71E59D8EB00D3C0A8 /* CurrencyModuleInitializer.m */; };
+		3FF3D6FF1E5ED3B900B7148E /* AlertsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF3D6FE1E5ED3B900B7148E /* AlertsManager.m */; };
+		3FF3D7001E5ED3B900B7148E /* AlertsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF3D6FE1E5ED3B900B7148E /* AlertsManager.m */; };
 		6B85C90A1E5779C20082A62C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B85C9091E5779C20082A62C /* main.m */; };
 		6B85C90D1E5779C20082A62C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B85C90C1E5779C20082A62C /* AppDelegate.m */; };
 		6B85C9131E5779C20082A62C /* Exchange.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B85C9111E5779C20082A62C /* Exchange.storyboard */; };
@@ -206,6 +208,8 @@
 		3FEDABE31E59D8D600D3C0A8 /* CurrencyModuleConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyModuleConfigurator.m; sourceTree = "<group>"; };
 		3FEDABE61E59D8EB00D3C0A8 /* CurrencyModuleInitializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyModuleInitializer.h; sourceTree = "<group>"; };
 		3FEDABE71E59D8EB00D3C0A8 /* CurrencyModuleInitializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyModuleInitializer.m; sourceTree = "<group>"; };
+		3FF3D6FD1E5ED3B900B7148E /* AlertsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertsManager.h; sourceTree = "<group>"; };
+		3FF3D6FE1E5ED3B900B7148E /* AlertsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertsManager.m; sourceTree = "<group>"; };
 		3FF9721B1E5D722F00E38095 /* CurrencyExchangeValueChangingDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyExchangeValueChangingDelegate.h; sourceTree = "<group>"; };
 		6B85C9051E5779C20082A62C /* Revolut-test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Revolut-test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B85C9091E5779C20082A62C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -430,6 +434,8 @@
 				3FEDAB531E59979100D3C0A8 /* ExchangeNotificationsHandlerDelegate.h */,
 				3FEDAB4F1E59969000D3C0A8 /* ExchangeNotificationsHandler.h */,
 				3FEDAB501E59969000D3C0A8 /* ExchangeNotificationsHandler.m */,
+				3FF3D6FD1E5ED3B900B7148E /* AlertsManager.h */,
+				3FF3D6FE1E5ED3B900B7148E /* AlertsManager.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -872,6 +878,7 @@
 				3FC120A01E59E06200A834BE /* CurrencyCollectionViewDataManager.m in Sources */,
 				3FC120E01E5A0D6F00A834BE /* PONSO_Wallet.m in Sources */,
 				3FEDABE81E59D8EB00D3C0A8 /* CurrencyModuleInitializer.m in Sources */,
+				3FF3D6FF1E5ED3B900B7148E /* AlertsManager.m in Sources */,
 				3FC121051E5A0EF700A834BE /* PONSO_WalletParser.m in Sources */,
 				6B85C90D1E5779C20082A62C /* AppDelegate.m in Sources */,
 				3FC120F71E5A0DD300A834BE /* NSManagedObject+Creating.m in Sources */,
@@ -946,6 +953,7 @@
 				3FC1210E1E5A14B600A834BE /* User+FetchRequests.m in Sources */,
 				3FEDABD31E59D76600D3C0A8 /* CurrencyViewController.m in Sources */,
 				3F03361A1E5B4E80009FD37E /* CurrencyTextFormatter.m in Sources */,
+				3FF3D7001E5ED3B900B7148E /* AlertsManager.m in Sources */,
 				3FC120F11E5A0D8300A834BE /* Wallet+CoreDataProperties.m in Sources */,
 				3F0336531E5C6AD2009FD37E /* UIView+DefaultConstraints.m in Sources */,
 			);

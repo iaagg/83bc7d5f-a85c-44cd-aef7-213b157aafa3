@@ -38,11 +38,10 @@
 
 - (void)updateRateWithCurrencyRate:(CurrencyRate *)currencyRate {
     [self p_stopIndicator];
-    UIFont *labelFont = _rateLabel.font;
-    _rateLabel.attributedText = [[CurrencyTextFormatter shared] makeRateStringWithFromCurrency:currencyRate.fromCurrency
-                                                                                    toCurrency:currencyRate.toCurrency
-                                                                                          rate:currencyRate.rate
-                                                                                     labelFont:labelFont from:YES];
+    _rateLabel.attributedText = [CurrencyTextFormatter makeRateStringWithFromCurrency:currencyRate.fromCurrency
+                                                                           toCurrency:currencyRate.toCurrency
+                                                                                 rate:currencyRate.rate
+                                                                                 from:YES];
 }
 
 #pragma mark - Private methods

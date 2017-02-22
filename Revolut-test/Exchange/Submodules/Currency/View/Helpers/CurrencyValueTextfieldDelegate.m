@@ -1,5 +1,8 @@
 
 #import "CurrencyValueTextfieldDelegate.h"
+#import "CurrencyTextFormatter.h"
+
+static NSInteger const kRevolutExchangeValueInputLimit = 3;
 
 @interface CurrencyValueTextfieldDelegate ()
 
@@ -21,19 +24,39 @@
     NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
     NSString *newStringWithoutPrefix = [self p_exchangeValueWithoutPrefix:newString];
     
+    //Limiting input
+    if (newStringWithoutPrefix.length > kRevolutExchangeValueInputLimit) {
+        return NO;
+    }
+    
+    BOOL deleting = newString.length < textField.text.length;
+    
     if (newStringWithoutPrefix.length == 0) {
-        [_delegate userChangedEchangeValue:nil];
+        [_delegate userChangedExchangeValue:nil];
         textField.text = newStringWithoutPrefix;
         return NO;
     } else {
+        
+        //Avoiding deleting of prefix
+        if (deleting) {
+            if (NSLocationInRange(range.location, [self p_rangeOfPrefix])) {
+                return NO;
+            }
+        }
+        
         double value = [newStringWithoutPrefix doubleValue];
-        [_delegate userChangedEchangeValue:[NSNumber numberWithDouble:value]];
+        [_delegate userChangedExchangeValue:[NSNumber numberWithDouble:value]];
         textField.text = [self p_exchangeValueWithPrefix:newStringWithoutPrefix];
         return NO;
     }
 }
 
 #pragma mark - Private methods
+
+- (NSRange)p_rangeOfPrefix {
+    NSRange range = NSMakeRange(0, kRevolutFromCurrencyExchangeValuePrefix.length);
+    return range;
+}
 
 - (NSString *)p_exchangeValueWithoutPrefix:(NSString *)valueWithPrefix {
     NSString *value = [valueWithPrefix stringByReplacingOccurrencesOfString:kRevolutFromCurrencyExchangeValuePrefix
