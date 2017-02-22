@@ -25,6 +25,14 @@
     [_view updateExchangeResultLabelWithValue:value];
 }
 
+- (void)setExchangingCurrencySavedValue:(NSNumber *)savedValue {
+    [_view setExchangingCurrencySavedValue:savedValue];
+}
+
+- (void)reloadInterface {
+    [_view reloadInterface];
+}
+
 #pragma mark - CurrencyViewOutput
 
 - (void)module:(void (^)(id<CurrencyModuleInput>))module {

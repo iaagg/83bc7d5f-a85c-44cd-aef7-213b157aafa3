@@ -8,7 +8,6 @@
 #import "CurrencyValueTextfieldDelegate.h"
 
 static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrencyCollectionViewCell";
-static NSString * const kRevolutToCurrencyExchangeValuePrefix = @"+ ";
 
 @interface CurrencyCollectionViewDataManager () <CurrencyExchangeValueChangingDelegate>
 
@@ -65,10 +64,26 @@ static NSString * const kRevolutToCurrencyExchangeValuePrefix = @"+ ";
 - (void)updateExchangeResultLabelWithValue:(NSNumber *)value {
     NSIndexPath *currentPageIndex = [self p_currentPage];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CurrencyCollectionViewCell *cell = (CurrencyCollectionViewCell *)([_collectionView cellForItemAtIndexPath:currentPageIndex]);
-        cell.value.text = [self p_valueStringWithValue:value];
+        cell.value.text = [self p_exchangeResultValueStringWithValue:value];
     });
+}
+
+- (void)setExchangingCurrencySavedValue:(NSNumber *)savedValue {
+    NSIndexPath *currentPageIndex = [self p_currentPage];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        CurrencyCollectionViewCell *cell = (CurrencyCollectionViewCell *)([_collectionView cellForItemAtIndexPath:currentPageIndex]);
+        cell.value.text = [self p_exchangingValueStringWithValue:savedValue];
+    });
+}
+
+- (void)reloadCentralSection {
+    NSIndexSet *set = [NSIndexSet indexSetWithIndex:1];
+    [_collectionView reloadSections:set];
+    NSIndexPath *currentCurrency = [self p_currentPage];
+    [self p_focusOnCurrencyValueInCellWithIndex:currentCurrency];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -119,7 +134,7 @@ static NSString * const kRevolutToCurrencyExchangeValuePrefix = @"+ ";
         [self p_switchToPageWithIndexPath:indexOfPage];
         
         //In case of carousel shifting cell may be not initialized yet to become first responder
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self p_focusOnCurrencyValueInCellWithIndex:indexOfPage];
             [_delegate switchedToCurrencyWithIndex:indexOfPage.item];
         });
@@ -130,7 +145,11 @@ static NSString * const kRevolutToCurrencyExchangeValuePrefix = @"+ ";
     [_collectionView scrollToItemAtIndexPath:indexPath
                             atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                     animated:NO];
-    [_delegate switchedToCurrencyWithIndex:indexPath.item];
+    //In case of carousel shifting cell may be not initialized yet to become first responder
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self p_focusOnCurrencyValueInCellWithIndex:indexPath];
+        [_delegate switchedToCurrencyWithIndex:indexPath.item];
+    });
 }
 
 - (void)p_focusOnCurrencyValueInCellWithIndex:(NSIndexPath *)indexPath {
@@ -167,7 +186,7 @@ static NSString * const kRevolutToCurrencyExchangeValuePrefix = @"+ ";
     } else {
         cell.textFieldDelegateStrongReference = [[CurrencyValueTextfieldDelegate alloc] initWithValueChangingDelegate:self];
         cell.value.delegate = cell.textFieldDelegateStrongReference;
-        [cell.value becomeFirstResponder];
+//        [cell.value becomeFirstResponder];
     }
 }
 
@@ -204,7 +223,18 @@ static NSString * const kRevolutToCurrencyExchangeValuePrefix = @"+ ";
     return page;
 }
 
-- (NSString *)p_valueStringWithValue:(NSNumber *)value {
+- (NSString *)p_exchangingValueStringWithValue:(NSNumber *)value {
+    
+    if (!value) {
+        return @"";
+    }
+    
+    NSString *valueString = [NSString stringWithFormat:@"%@", value];
+    NSString *outputString = [NSString stringWithFormat:@"%@%@", kRevolutFromCurrencyExchangeValuePrefix, valueString];
+    return outputString;
+}
+
+- (NSString *)p_exchangeResultValueStringWithValue:(NSNumber *)value {
     
     if (!value) {
         return @"";

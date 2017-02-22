@@ -9,6 +9,7 @@
 - (void)didFetchCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates;
 - (void)didFailedFetchingCurrenciesRates;
 - (void)didFinishFetchingCurrenciesRates;
+- (void)didFinishExchange;
 
 - (void)didMakeExchangeFromCurrencyRate:(CurrencyRate *)currencyRate;
 - (void)didMakeExchangeToCurrencyRate:(CurrencyRate *)currencyRate;

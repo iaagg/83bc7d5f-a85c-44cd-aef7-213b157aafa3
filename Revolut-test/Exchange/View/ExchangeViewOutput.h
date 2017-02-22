@@ -7,6 +7,7 @@
 
 //User actions
 - (void)userChoosedToRetryToUpdateCurrencies;
+- (void)userChoosedToProcceedExchange;
 
 //Fetching Subviews
 - (void)makeFromCurrencyController;

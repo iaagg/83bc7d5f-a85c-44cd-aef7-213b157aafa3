@@ -22,6 +22,7 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
+    [self.view layoutIfNeeded];
     [_dataManager switchToPageWithIndex:_currentCurrencyIndex];
 }
 
@@ -34,6 +35,10 @@
     _pageControl.currentPage = _currentCurrencyIndex;
 }
 
+- (void)reloadInterface {
+    [_dataManager reloadCentralSection];
+}
+
 - (void)didMakeDataSourceForCurrencyCollectionView:(NSArray *)dataSource {
     [self p_setupCollectionViewWithDataSorce:dataSource];
 }
@@ -44,6 +49,10 @@
 
 - (void)updateExchangeResultLabelWithValue:(NSNumber *)value {
     [_dataManager updateExchangeResultLabelWithValue:value];
+}
+
+- (void)setExchangingCurrencySavedValue:(NSNumber *)savedValue {
+    [_dataManager setExchangingCurrencySavedValue:savedValue];
 }
 
 #pragma mark - CurrencyCollectionViewDataManagerDelegate

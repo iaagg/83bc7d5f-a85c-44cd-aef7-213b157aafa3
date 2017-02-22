@@ -1,8 +1,6 @@
 
 #import "CurrencyValueTextfieldDelegate.h"
 
-static NSString * const kRevolutFromCurrencyExchangeValuePrefix = @"- ";
-
 @interface CurrencyValueTextfieldDelegate ()
 
 @property (weak, nonatomic) id<CurrencyExchangeValueChangingDelegate> delegate;

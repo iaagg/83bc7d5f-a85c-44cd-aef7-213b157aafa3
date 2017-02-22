@@ -22,4 +22,10 @@
                             currenciesRates:(NSArray<NSDictionary *> *)currenciesRates
                             valueToExchange:(NSNumber *)value;
 
+- (void)proceedExchangeFromCurrency:(PONSO_Currency *)fromCurrency
+                         toCurrency:(PONSO_Currency *)toCurrency
+                    currenciesRates:(NSArray<NSDictionary *> *)currenciesRates
+                    valueToExchange:(NSNumber *)value;
+
+
 @end

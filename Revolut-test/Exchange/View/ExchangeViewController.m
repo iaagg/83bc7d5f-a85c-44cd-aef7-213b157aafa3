@@ -66,6 +66,12 @@ static NSString * const kRevolutWaitForUpdateButtonTitle = @"OK";
     [self.view layoutSubviews];
 }
 
+#pragma mark - Button actions
+
+- (IBAction)exchangeButtonTapped:(UIButton *)button {
+    [_output userChoosedToProcceedExchange];
+}
+
 #pragma mark - Private methods
 
 - (void)p_setupCurrencyRateView {

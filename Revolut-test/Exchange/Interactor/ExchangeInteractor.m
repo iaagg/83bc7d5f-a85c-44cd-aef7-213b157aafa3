@@ -7,6 +7,7 @@
 #import "CurrenciesParser.h"
 #import "PONSO_User.h"
 #import "PONSO_UserParser.h"
+#import "PONSO_Currency.h"
 #import "UserSaver.h"
 #import "NetworkClient.h"
 #import "RatesMaker.h"
@@ -60,7 +61,7 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
 - (void)savePonsoUser:(PONSO_User *)ponsoUser {
     NSManagedObjectContext *bgContext = [_coreDataStack makeBackgroundContext];
     User *user = [User findByUUID:ponsoUser.uuid inContext:bgContext];
-    NSAssert(user == nil, @"Fatal error: user with uuid: %@ wasn't found in db", ponsoUser.uuid);
+    NSAssert(user != nil, @"Fatal error: user with uuid: %@ wasn't found in db", ponsoUser.uuid);
     
     [UserSaver savePonsoUser:ponsoUser toCoreDataUser:user inBgContext:bgContext];
 }
@@ -87,12 +88,24 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
                                  toCurrency:(PONSO_Currency *)toCurrency
                             currenciesRates:(NSArray<NSDictionary *> *)currenciesRates
                             valueToExchange:(NSNumber *)value {
-    CurrencyRate *rate = [RatesMaker currencyRateFromCurrency:fromCurrency
-                                                   toCurrency:toCurrency
-                                          withCurrenciesRates:currenciesRates];
-    double valueAsDouble = [value doubleValue];
-    double outputValueAsDouble = valueAsDouble * rate.rate;
-    [_output didCountValueAfterExchange:[NSNumber numberWithDouble:outputValueAsDouble]];
+    double valueAfterExchange = [self p_countValueAfterExchangeFromCurrency:fromCurrency
+                                                                 toCurrency:toCurrency
+                                                            currenciesRates:currenciesRates
+                                                            valueToExchange:value];
+    [_output didCountValueAfterExchange:[NSNumber numberWithDouble:valueAfterExchange]];
+}
+
+- (void)proceedExchangeFromCurrency:(PONSO_Currency *)fromCurrency
+                         toCurrency:(PONSO_Currency *)toCurrency
+                    currenciesRates:(NSArray<NSDictionary *> *)currenciesRates
+                    valueToExchange:(NSNumber *)value {
+    double valueAfterExchange = [self p_countValueAfterExchangeFromCurrency:fromCurrency
+                                                                 toCurrency:toCurrency
+                                                            currenciesRates:currenciesRates
+                                                            valueToExchange:value];
+    fromCurrency.amount -= [value doubleValue];
+    toCurrency.amount += valueAfterExchange;
+    [_output didFinishExchange];
 }
 
 #pragma mark - CurrenciesParserDelegate
@@ -107,6 +120,18 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
 }
 
 #pragma mark - Private methods
+
+- (double)p_countValueAfterExchangeFromCurrency:(PONSO_Currency *)fromCurrency
+                                     toCurrency:(PONSO_Currency *)toCurrency
+                                currenciesRates:(NSArray<NSDictionary *> *)currenciesRates
+                                valueToExchange:(NSNumber *)value {
+    CurrencyRate *rate = [RatesMaker currencyRateFromCurrency:fromCurrency
+                                                   toCurrency:toCurrency
+                                          withCurrenciesRates:currenciesRates];
+    double valueAsDouble = [value doubleValue];
+    double outputValueAsDouble = valueAsDouble * rate.rate;
+    return outputValueAsDouble;
+}
 
 - (void)p_fetchRatesData {
     [[NetworkClient shared] requestCurrenciesWithSuccess:^(NSData *response) {
