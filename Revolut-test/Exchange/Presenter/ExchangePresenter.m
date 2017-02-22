@@ -20,6 +20,7 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
 @property (strong, nonatomic) NSArray<NSDictionary *>   *currenciesRates;
 @property (assign, nonatomic) NSInteger                 currentFromCurrencyIndex;
 @property (assign, nonatomic) NSInteger                 currentToCurrencyIndex;
+@property (strong, nonatomic) NSNumber                  *exchangeValue;
 
 @end
 
@@ -91,6 +92,10 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
     }
 }
 
+- (void)didCountValueAfterExchange:(NSNumber *)value {
+    [_toCurrencySubModule updateExchangeResultLabelWithValue:value];
+}
+
 #pragma mark - CurrencyModuleOutput
 
 - (void)userSwitchedToCurrencyWithIndex:(NSInteger)index currencyViewType:(CurrencyViewType)currencyViewType {
@@ -110,6 +115,22 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
     }
     
     [self p_performCurrencyRateUpdate];
+    [self currencyExchangeValueWasUpdated:_exchangeValue];
+}
+
+- (void)currencyExchangeValueWasUpdated:(NSNumber *)newValue {
+    _exchangeValue = newValue;
+    
+    if (newValue) {
+        PONSO_Currency *fromCurrency = _user.wallet.currencies[_currentFromCurrencyIndex];
+        PONSO_Currency *toCurrency = _user.wallet.currencies[_currentToCurrencyIndex];
+        [_interactor countValueAfterExchangeFromCurrency:fromCurrency
+                                              toCurrency:toCurrency
+                                         currenciesRates:_currenciesRates
+                                         valueToExchange:newValue];
+    } else {
+        [_toCurrencySubModule updateExchangeResultLabelWithValue:newValue];
+    }
 }
 
 #pragma mark - Private methods

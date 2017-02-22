@@ -11,5 +11,6 @@
 - (void)didMakeDataSourceForCurrencyCollectionView:(NSArray *)dataSource;
 
 - (void)updateCurrencyRateLabelWithRate:(CurrencyRate *)currencyRate;
+- (void)updateExchangeResultLabelWithValue:(NSNumber *)value;
 
 @end

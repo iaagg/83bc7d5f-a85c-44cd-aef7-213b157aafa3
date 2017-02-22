@@ -12,5 +12,6 @@
 
 - (void)didMakeExchangeFromCurrencyRate:(CurrencyRate *)currencyRate;
 - (void)didMakeExchangeToCurrencyRate:(CurrencyRate *)currencyRate;
+- (void)didCountValueAfterExchange:(NSNumber *)value;
 
 @end

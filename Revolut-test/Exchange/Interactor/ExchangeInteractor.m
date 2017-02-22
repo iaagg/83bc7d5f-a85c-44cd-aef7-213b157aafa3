@@ -10,6 +10,7 @@
 #import "UserSaver.h"
 #import "NetworkClient.h"
 #import "RatesMaker.h"
+#import "CurrencyRate.h"
 
 static NSString * const kRevolutDefaultUsername = @"defaultRevolutUser";
 static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
@@ -80,6 +81,18 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
                                                    toCurrency:toCurrency
                                           withCurrenciesRates:currenciesRates];
     [_output didMakeExchangeToCurrencyRate:rate];
+}
+
+- (void)countValueAfterExchangeFromCurrency:(PONSO_Currency *)fromCurrency
+                                 toCurrency:(PONSO_Currency *)toCurrency
+                            currenciesRates:(NSArray<NSDictionary *> *)currenciesRates
+                            valueToExchange:(NSNumber *)value {
+    CurrencyRate *rate = [RatesMaker currencyRateFromCurrency:fromCurrency
+                                                   toCurrency:toCurrency
+                                          withCurrenciesRates:currenciesRates];
+    double valueAsDouble = [value doubleValue];
+    double outputValueAsDouble = valueAsDouble * rate.rate;
+    [_output didCountValueAfterExchange:[NSNumber numberWithDouble:outputValueAsDouble]];
 }
 
 #pragma mark - CurrenciesParserDelegate

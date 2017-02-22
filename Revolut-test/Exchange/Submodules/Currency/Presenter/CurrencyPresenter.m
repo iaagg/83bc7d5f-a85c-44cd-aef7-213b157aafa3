@@ -21,6 +21,10 @@
     [_view updateCurrencyRateLabelWithRate:currencyRate];
 }
 
+- (void)updateExchangeResultLabelWithValue:(NSNumber *)value {
+    [_view updateExchangeResultLabelWithValue:value];
+}
+
 #pragma mark - CurrencyViewOutput
 
 - (void)module:(void (^)(id<CurrencyModuleInput>))module {
@@ -37,6 +41,10 @@
 
 - (void)userSwitchedToCurrencyWithIndex:(NSInteger)index currencyViewType:(CurrencyViewType)currencyViewType {
     [_parentModule userSwitchedToCurrencyWithIndex:index currencyViewType:currencyViewType];
+}
+
+- (void)currencyExchangeValueWasUpdated:(NSNumber *)newValue {
+    [_parentModule currencyExchangeValueWasUpdated:newValue];
 }
 
 #pragma mark - CurrencyIntractorOutput

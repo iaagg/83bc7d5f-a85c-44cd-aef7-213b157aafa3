@@ -11,4 +11,7 @@
 //Currencies navigation
 - (void)userSwitchedToCurrencyWithIndex:(NSInteger)index currencyViewType:(CurrencyViewType)currencyViewType;
 
+//Exchanging
+- (void)currencyExchangeValueWasUpdated:(NSNumber *)newValue;
+
 @end

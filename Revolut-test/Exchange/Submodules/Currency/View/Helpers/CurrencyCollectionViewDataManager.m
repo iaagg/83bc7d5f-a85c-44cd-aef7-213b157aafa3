@@ -4,10 +4,13 @@
 #import "PONSO_Currency.h"
 #import "CurrencyTextFormatter.h"
 #import "CurrencyRate.h"
+#import "CurrencyExchangeValueChangingDelegate.h"
+#import "CurrencyValueTextfieldDelegate.h"
 
 static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrencyCollectionViewCell";
+static NSString * const kRevolutToCurrencyExchangeValuePrefix = @"+ ";
 
-@interface CurrencyCollectionViewDataManager ()
+@interface CurrencyCollectionViewDataManager () <CurrencyExchangeValueChangingDelegate>
 
 @property (weak, nonatomic) id<CurrencyCollectionViewDataManagerDelegate>   delegate;
 @property (strong, nonatomic) NSArray                                       *dataSource;
@@ -25,11 +28,47 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     return self;
 }
 
+#pragma mark - CurrencyExchangeValueChangingDelegate
+
+- (void)userChangedEchangeValue:(NSNumber *)newValue {
+    [_delegate currencyExchangeValueWasUpdated:newValue];
+}
+
 #pragma mark - CurrencyCollectionViewDataManagerProtocol
 
 - (void)setRate:(CurrencyRate *)rate {
     _rate = rate;
     [_collectionView reloadData];
+}
+
+- (void)switchToPageWithIndex:(NSInteger)index {
+    
+    if (_dataSource) {
+        NSIndexPath *pageIndex;
+        
+        if (index) {
+            pageIndex = [NSIndexPath indexPathForItem:index inSection:1];
+        } else {
+            pageIndex = [NSIndexPath indexPathForItem:0 inSection:1];
+        }
+        
+        if (_dataSource.count > 0) {
+            NSArray *currencies = _dataSource[1];
+            
+            if (currencies.count > pageIndex.item) {
+                [self p_switchToPageWithIndexPath:pageIndex];
+            }
+        }
+    }
+}
+
+- (void)updateExchangeResultLabelWithValue:(NSNumber *)value {
+    NSIndexPath *currentPageIndex = [self p_currentPage];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        CurrencyCollectionViewCell *cell = (CurrencyCollectionViewCell *)([_collectionView cellForItemAtIndexPath:currentPageIndex]);
+        cell.value.text = [self p_valueStringWithValue:value];
+    });
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -54,15 +93,14 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
 
 #pragma mark - UICollectionViewDelegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat offset = scrollView.contentOffset.x;
-    
-    if ([self p_isPageSwitchedWithOffset:offset]) {
-        NSIndexPath *indexOfPage = [self p_currentPage];
-        [self p_switchToPageWithIndexPath:indexOfPage];
-        [self p_focusOnCurrencyValueInCellWithIndex:indexOfPage];
-        [_delegate switchedToCurrencyWithIndex:indexOfPage.item];
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        [self p_handlePageShiftingInScrollView:scrollView];
     }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self p_handlePageShiftingInScrollView:scrollView];
 }
 
 #pragma mark - UICollectionViewFlowLayout
@@ -71,30 +109,22 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     return collectionView.bounds.size;
 }
 
-#pragma mark - Navigation
+#pragma mark - Private methods
 
-- (void)switchToPageWithIndex:(NSInteger)index {
+- (void)p_handlePageShiftingInScrollView:(UIScrollView *)scrollView {
+    CGFloat offset = scrollView.contentOffset.x;
     
-    if (_dataSource) {
-        NSIndexPath *pageIndex;
+    if ([self p_isPageSwitchedWithOffset:offset]) {
+        NSIndexPath *indexOfPage = [self p_currentPage];
+        [self p_switchToPageWithIndexPath:indexOfPage];
         
-        if (index) {
-            pageIndex = [NSIndexPath indexPathForItem:index inSection:1];
-        } else {
-            pageIndex = [NSIndexPath indexPathForItem:0 inSection:1];
-        }
-        
-        if (_dataSource.count > 0) {
-            NSArray *currencies = _dataSource[1];
-            
-            if (currencies.count > pageIndex.item) {
-                [self p_switchToPageWithIndexPath:pageIndex];
-            }
-        }
+        //In case of carousel shifting cell may be not initialized yet to become first responder
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self p_focusOnCurrencyValueInCellWithIndex:indexOfPage];
+            [_delegate switchedToCurrencyWithIndex:indexOfPage.item];
+        });
     }
 }
-
-#pragma mark - Private methods
 
 - (void)p_switchToPageWithIndexPath:(NSIndexPath *)indexPath {
     [_collectionView scrollToItemAtIndexPath:indexPath
@@ -135,6 +165,8 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     if (_viewType == ToCurrencyType) {
         cell.value.userInteractionEnabled = NO;
     } else {
+        cell.textFieldDelegateStrongReference = [[CurrencyValueTextfieldDelegate alloc] initWithValueChangingDelegate:self];
+        cell.value.delegate = cell.textFieldDelegateStrongReference;
         [cell.value becomeFirstResponder];
     }
 }
@@ -170,6 +202,17 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     
     NSIndexPath *page = [NSIndexPath indexPathForItem:pageInCentralSection inSection:1];
     return page;
+}
+
+- (NSString *)p_valueStringWithValue:(NSNumber *)value {
+    
+    if (!value) {
+        return @"";
+    }
+    
+    NSString *valueString = [NSString stringWithFormat:@"%.2f", [value doubleValue]];
+    NSString *outputString = [NSString stringWithFormat:@"%@%@", kRevolutToCurrencyExchangeValuePrefix, valueString];
+    return outputString;
 }
 
 @end

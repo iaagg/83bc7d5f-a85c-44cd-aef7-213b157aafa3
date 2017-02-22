@@ -14,5 +14,6 @@
 - (instancetype)initWithDelegate:(id<CurrencyCollectionViewDataManagerDelegate>)delegate dataSource:(NSArray *)dataSource;
 
 - (void)switchToPageWithIndex:(NSInteger)index;
+- (void)updateExchangeResultLabelWithValue:(NSNumber *)value;
 
 @end

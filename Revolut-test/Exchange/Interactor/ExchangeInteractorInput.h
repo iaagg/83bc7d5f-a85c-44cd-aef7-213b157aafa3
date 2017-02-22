@@ -17,4 +17,9 @@
                                     toCurrency:(PONSO_Currency *)toCurrency
                            withCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates;
 
+- (void)countValueAfterExchangeFromCurrency:(PONSO_Currency *)fromCurrency
+                                 toCurrency:(PONSO_Currency *)toCurrency
+                            currenciesRates:(NSArray<NSDictionary *> *)currenciesRates
+                            valueToExchange:(NSNumber *)value;
+
 @end

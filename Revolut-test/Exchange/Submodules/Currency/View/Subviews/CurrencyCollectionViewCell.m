@@ -7,6 +7,7 @@
     [super prepareForReuse];
     _currencyRateLabel.text = @"";
     _depositLabel.text = @"";
+    _value.text = @"";
 }
 
 @end

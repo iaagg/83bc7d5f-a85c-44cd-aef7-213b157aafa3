@@ -22,7 +22,6 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    [_collectionView layoutSubviews];
     [_dataManager switchToPageWithIndex:_currentCurrencyIndex];
 }
 
@@ -43,12 +42,20 @@
     _dataManager.rate = currencyRate;
 }
 
+- (void)updateExchangeResultLabelWithValue:(NSNumber *)value {
+    [_dataManager updateExchangeResultLabelWithValue:value];
+}
+
 #pragma mark - CurrencyCollectionViewDataManagerDelegate
 
 - (void)switchedToCurrencyWithIndex:(NSInteger)index {
     _currentCurrencyIndex = index;
     _pageControl.currentPage = _currentCurrencyIndex;
     [_output userSwitchedToCurrencyWithIndex:index currencyViewType:_viewType];
+}
+
+- (void)currencyExchangeValueWasUpdated:(NSNumber *)newValue {
+    [_output currencyExchangeValueWasUpdated:newValue];
 }
 
 #pragma mark - Private mathods

@@ -206,6 +206,7 @@
 		3FEDABE31E59D8D600D3C0A8 /* CurrencyModuleConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyModuleConfigurator.m; sourceTree = "<group>"; };
 		3FEDABE61E59D8EB00D3C0A8 /* CurrencyModuleInitializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyModuleInitializer.h; sourceTree = "<group>"; };
 		3FEDABE71E59D8EB00D3C0A8 /* CurrencyModuleInitializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyModuleInitializer.m; sourceTree = "<group>"; };
+		3FF9721B1E5D722F00E38095 /* CurrencyExchangeValueChangingDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyExchangeValueChangingDelegate.h; sourceTree = "<group>"; };
 		6B85C9051E5779C20082A62C /* Revolut-test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Revolut-test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B85C9091E5779C20082A62C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6B85C90B1E5779C20082A62C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -312,6 +313,7 @@
 				3F0336181E5B4E80009FD37E /* CurrencyTextFormatter.m */,
 				3F03361B1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.h */,
 				3F03361C1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.m */,
+				3FF9721B1E5D722F00E38095 /* CurrencyExchangeValueChangingDelegate.h */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
