@@ -1,7 +1,10 @@
 
 #import "NetworkClient.h"
 
+//API
 static NSString * const kRevolutCurrenciesURL = @"http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
+
+//Settings
 static NSTimeInterval const kRevolutDefaultRequestTimeout = 20;
 
 @implementation NetworkClient
@@ -18,40 +21,50 @@ static NSTimeInterval const kRevolutDefaultRequestTimeout = 20;
 }
 
 - (void)requestCurrenciesWithSuccess:(void(^)(NSData *response))success failureHandler:(void(^)(NSError *error))failure {
-    // Instantiate a session configuration object.
+    
+    //Session configuration
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     configuration.timeoutIntervalForRequest = kRevolutDefaultRequestTimeout;
     configuration.requestCachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     
-    // Instantiate a session object.
+    //Session
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
     
-    
+    //Currencies rates API url
     NSURL *url = [NSURL URLWithString:kRevolutCurrenciesURL];
     
-    // Create a data task object to perform the data downloading.
+    //Session data task object to perform the data downloading.
     NSURLSessionDataTask *task = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
+        //# If error received
         if (error != nil) {
-            // If any error occurs then just display its description on the console.
+            
+            //Printing error into log
             NSLog(@"%@", [error localizedDescription]);
             
+            //Call failure handler on main queue
             dispatch_async(dispatch_get_main_queue(), ^{
-                failure(error);
+                if (failure) {
+                    failure(error);
+                }
             });
-        }
-        else{
-            // If no error occurs, check the HTTP status code.
+            
+        //# Response and data received
+        } else {
+            
+            //Checking the HTTP status code.
             NSInteger HTTPStatusCode = [(NSHTTPURLResponse *)response statusCode];
             
-            // If it's other than 200, then show it on the console.
+            //If code is not 200 -> print it into log
             if (HTTPStatusCode != 200) {
                 NSLog(@"HTTP status code = %ld", (long)HTTPStatusCode);
             }
             
-            // Call the completion handler with the returned data on the main thread.
+            //Call the success handler with the returned data on the main thread.
             dispatch_async(dispatch_get_main_queue(), ^{
-                success(data);
+                if (success) {
+                    success(data);
+                }
             });
         }
     }];

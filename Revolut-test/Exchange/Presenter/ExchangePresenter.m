@@ -27,8 +27,8 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
 @implementation ExchangePresenter
 
 - (void)viewIsReady {
-    [_interactor startFetchingRatesTask];
     [_interactor fetchDefaultUser];
+    [_interactor startFetchingRatesTask];
     [self.view setupInitialState];
 }
 
@@ -48,10 +48,6 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
     [_toCurrencySubModule setupWithWallet:_user.wallet currencyViewType:ToCurrencyType];
     _toCurrencySubModule.parentModule = self;
     [_view didMakeToCurrencyController:currencyController];
-}
-
-- (void)userChoosedToRetryToUpdateCurrencies {
-    [_interactor retryFetchingRates];
 }
 
 - (void)userChoosedToProcceedExchange {
@@ -93,7 +89,7 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
     [_toCurrencySubModule reloadInterface];
 }
 
-- (void)didMakeExchangeFromCurrencyRate:(CurrencyRate *)currencyRate {
+- (void)didMakeExchangingFromCurrencyRate:(CurrencyRate *)currencyRate {
     if (currencyRate) {
         [_view setUpdatedCurrenciesRatesStateWith:currencyRate];
     } else {
@@ -101,7 +97,7 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
     }
 }
 
-- (void)didMakeExchangeToCurrencyRate:(CurrencyRate *)currencyRate {
+- (void)didMakeExchangingToCurrencyRate:(CurrencyRate *)currencyRate {
     if (currencyRate) {
         [self p_updateExchangeResultWithValue:_exchangeValue];
         [_toCurrencySubModule updateCurrencyRateLabelWithRate:currencyRate];
@@ -138,10 +134,12 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
 - (void)currencyExchangeValueWasUpdated:(NSNumber *)newValue {
     _exchangeValue = newValue;
     [self p_updateExchangeResultWithValue:newValue];
+    [self p_blockExchangeIfExchangeValueDoesNotExist];
 }
 
 - (void)exchangeValueExceedsDeposit:(BOOL)valueExceedsDeposit {
     [_view exchangeValueExceedsDeposit:valueExceedsDeposit];
+    [self p_blockExchangeIfExchangeValueDoesNotExist];
 }
 
 #pragma mark - Private methods
@@ -164,6 +162,12 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
     [self p_updateExchangeResultWithValue:_exchangeValue];
 }
 
+- (void)p_blockExchangeIfExchangeValueDoesNotExist {
+    if (!_exchangeValue) {
+        [_view noValueToExchange];
+    }
+}
+
 - (CurrencyViewController *)p_instantiateCurrencyController {
     UIViewController *controller = [STORYBOARD instantiateViewControllerWithIdentifier:kRevolutCurrencyViewControllerSB_ID];
     CurrencyViewController *currencyController = (CurrencyViewController *)controller;
@@ -174,12 +178,12 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
     if (_currenciesRates) {
         PONSO_Currency *fromCurrency = _user.wallet.currencies[_currentFromCurrencyIndex];
         PONSO_Currency *toCurrency = _user.wallet.currencies[_currentToCurrencyIndex];
-        [_interactor makeExchangeFromCurrencyRateFromCurrency:fromCurrency
-                                                   toCurrency:toCurrency
+        [_interactor makeExchangingFromCurrencyRateFromCurrency:fromCurrency
+                                                     toCurrency:toCurrency
+                                            withCurrenciesRates:_currenciesRates];
+        [_interactor makeExchangingToCurrencyRateFromCurrency:toCurrency
+                                                   toCurrency:fromCurrency
                                           withCurrenciesRates:_currenciesRates];
-        [_interactor makeExchangeToCurrencyRateFromCurrency:toCurrency
-                                                 toCurrency:fromCurrency
-                                        withCurrenciesRates:_currenciesRates];
     }
 }
 

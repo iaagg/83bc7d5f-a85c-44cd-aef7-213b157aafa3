@@ -12,15 +12,20 @@
 #import "NetworkClient.h"
 #import "RatesMaker.h"
 #import "CurrencyRate.h"
+#import "ExchangeInteractorNotificationsHandlerProtocol.h"
+#import "ExchangeInteractorNotificationsHandler.h"
 
 static NSString * const kRevolutDefaultUsername = @"defaultRevolutUser";
-static NSTimeInterval const kRevolutRatesRequestPeriod = 5;//30;
+static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
 
 @interface ExchangeInteractor () <CurrenciesParserDelegate>
 
-@property (weak, nonatomic) id<StackProtocol>               coreDataStack;
-@property (strong, nonatomic) id<CurrenciesParserProtocol>  currenciesParser;
-@property (weak, nonatomic) NSTimer                         *fetchRatesTimer;
+@property (weak, nonatomic) id<StackProtocol>                                       coreDataStack;
+@property (strong, nonatomic) id<CurrenciesParserProtocol>                          currenciesParser;
+@property (weak, nonatomic) NSTimer                                                 *fetchRatesTimer;
+
+/*! @brief strong reference to object conforming to ExchangeInteractorNotificationsHandlerProtocol protocol */
+@property (strong, nonatomic) id<ExchangeInteractorNotificationsHandlerProtocol>    notificationsHandler;
 
 @end
 
@@ -30,21 +35,23 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 5;//30;
     if (self = [super init]) {
         _coreDataStack = [StackFactory stackForCurrentEnvironment];
         _currenciesParser = [[CurrenciesParser alloc] initWithDelegate:self];
+        _notificationsHandler = [[ExchangeInteractorNotificationsHandler alloc] initWithDelegate:self];
     }
     
     return self;
 }
 
+- (void)dealloc {
+    [_fetchRatesTimer invalidate];
+}
+
 #pragma mark - ExchangeIneractorInput
 
 - (void)startFetchingRatesTask {
-    [self p_fetchRatesData];
-    _fetchRatesTimer = [NSTimer scheduledTimerWithTimeInterval:kRevolutRatesRequestPeriod target:self selector:@selector(p_fetchRatesData) userInfo:nil repeats:YES];
-}
-
-- (void)retryFetchingRates {
-    [_fetchRatesTimer invalidate];
-    [self startFetchingRatesTask];
+    if (!_fetchRatesTimer) {
+        [self p_fetchRatesData];
+        _fetchRatesTimer = [NSTimer scheduledTimerWithTimeInterval:kRevolutRatesRequestPeriod target:self selector:@selector(p_fetchRatesData) userInfo:nil repeats:YES];
+    }
 }
 
 - (void)fetchDefaultUser {
@@ -65,33 +72,37 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 5;//30;
     [UserSaver savePonsoUser:ponsoUser toCoreDataUser:user inBgContext:bgContext];
 }
 
-- (void)makeExchangeFromCurrencyRateFromCurrency:(PONSO_Currency *)fromCurrency
+- (void)makeExchangingFromCurrencyRateFromCurrency:(PONSO_Currency *)fromCurrency
                                       toCurrency:(PONSO_Currency *)toCurrency
                              withCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates {
     CurrencyRate *rate = [RatesMaker currencyRateFromCurrency:fromCurrency
                                                    toCurrency:toCurrency
                                           withCurrenciesRates:currenciesRates];
-    [_output didMakeExchangeFromCurrencyRate:rate];
+    [_output didMakeExchangingFromCurrencyRate:rate];
 }
 
-- (void)makeExchangeToCurrencyRateFromCurrency:(PONSO_Currency *)fromCurrency
+- (void)makeExchangingToCurrencyRateFromCurrency:(PONSO_Currency *)fromCurrency
                                     toCurrency:(PONSO_Currency *)toCurrency
                            withCurrenciesRates:(NSArray<NSDictionary *> *)currenciesRates {
     CurrencyRate *rate = [RatesMaker currencyRateFromCurrency:fromCurrency
                                                    toCurrency:toCurrency
                                           withCurrenciesRates:currenciesRates];
-    [_output didMakeExchangeToCurrencyRate:rate];
+    [_output didMakeExchangingToCurrencyRate:rate];
 }
 
 - (void)countValueAfterExchangeFromCurrency:(PONSO_Currency *)fromCurrency
                                  toCurrency:(PONSO_Currency *)toCurrency
                             currenciesRates:(NSArray<NSDictionary *> *)currenciesRates
                             valueToExchange:(NSNumber *)value {
-    double valueAfterExchange = [self p_countValueAfterExchangeFromCurrency:fromCurrency
-                                                                 toCurrency:toCurrency
-                                                            currenciesRates:currenciesRates
-                                                            valueToExchange:value];
-    [_output didCountValueAfterExchange:[NSNumber numberWithDouble:valueAfterExchange]];
+    if (currenciesRates) {
+        double valueAfterExchange = [self p_countValueAfterExchangeFromCurrency:fromCurrency
+                                                                     toCurrency:toCurrency
+                                                                currenciesRates:currenciesRates
+                                                                valueToExchange:value];
+        [_output didCountValueAfterExchange:[NSNumber numberWithDouble:valueAfterExchange]];
+    } else {
+        [_output didCountValueAfterExchange:nil];
+    }
 }
 
 - (void)proceedExchangeFromCurrency:(PONSO_Currency *)fromCurrency
@@ -118,7 +129,22 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 5;//30;
     [_output didFailedFetchingCurrenciesRates];
 }
 
+#pragma mark - ExchangeInteractorNotificationsHandlerDelegate
+
+- (void)applicationWillResignActive {
+    [self p_stopFetchingRatesTask];
+}
+
+- (void)applicationDidBecomeActive {
+    [self startFetchingRatesTask];
+}
+
 #pragma mark - Private methods
+
+- (void)p_stopFetchingRatesTask {
+    [_fetchRatesTimer invalidate];
+    _fetchRatesTimer = nil;
+}
 
 - (double)p_countValueAfterExchangeFromCurrency:(PONSO_Currency *)fromCurrency
                                      toCurrency:(PONSO_Currency *)toCurrency
@@ -132,6 +158,7 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 5;//30;
     return outputValueAsDouble;
 }
 
+//Currencies rates network request
 - (void)p_fetchRatesData {
     [_output didStartFetchingCurrenciesRates];
     
@@ -146,6 +173,8 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 5;//30;
     PONSO_User *ponsoUser = [PONSO_UserParser parseCoreDataUser:user];
     [_output didFetchDefaultUser:ponsoUser];
 }
+
+#pragma Creationg of hardcoded default user 
 
 - (User *)p_setupDefaultUser {
     NSManagedObjectContext *mainContext = _coreDataStack.mainQueueContext;

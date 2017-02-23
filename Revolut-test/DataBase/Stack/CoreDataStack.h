@@ -5,7 +5,10 @@
 
 @interface CoreDataStack : NSObject <StackProtocol, PrivateStackProtocol>
 
+//StackProtocol
 @property (strong, nonatomic) NSManagedObjectContext        *mainQueueContext;
+
+//PrivateStackProtocol
 @property (strong, nonatomic) NSPersistentStoreCoordinator  *coordinator;
 
 @end

@@ -1,12 +1,11 @@
 
 #import "ExchangeViewController.h"
-#import "ExchangeNotificationsHandlerProtocol.h"
-#import "ExchangeNotificationsHandler.h"
+#import "ExchangeViewNotificationsHandlerProtocol.h"
+#import "ExchangeViewNotificationsHandler.h"
 #import "UIView+DefaultConstraints.h"
 
 @interface ExchangeViewController ()
 
-@property (strong, nonatomic) id<ExchangeNotificationsHandlerProtocol>  notificationsHandler;
 @property (weak, nonatomic) IBOutlet CurrencyRateView                   *currencyRateView;
 @property (weak, nonatomic) IBOutlet UIView                             *currencyRateViewContainer;
 @property (weak, nonatomic) IBOutlet UIView                             *fromCurrencyContainer;
@@ -14,18 +13,16 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint                 *currenciesContainerBottomConstraint;
 @property (weak, nonatomic) IBOutlet UIButton                           *exchangeButton;
 @property (weak, nonatomic) IBOutlet UIButton                           *cancelButton;
+
+/*! @brief strong reference to object conforming to ExchangeNotificationsHandlerProtocol protocol */
+@property (strong, nonatomic) id<ExchangeViewNotificationsHandlerProtocol>  notificationsHandler;
+
+/*! @brief Determines possibility of exchanging according to rates up to date state */
 @property (assign, nonatomic) BOOL                                      exchangeAvailable;
 
 @end
 
 @implementation ExchangeViewController
-
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    
-    //Making keyboard appeared without animations
-    [UIView setAnimationsEnabled:NO];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -36,7 +33,7 @@
 #pragma mark - ExchangeViewInput
 
 - (void)setupInitialState {
-    _notificationsHandler = [[ExchangeNotificationsHandler alloc] initWithDelegate:self];
+    _notificationsHandler = [[ExchangeViewNotificationsHandler alloc] initWithDelegate:self];
     [self p_fetchSubviews];
     [self p_disableCancelButton];
 }
@@ -49,7 +46,6 @@
 - (void)setUpdatedCurrenciesRatesStateWith:(CurrencyRate *)rate {
     [_currencyRateView updateRateWithCurrencyRate:rate];
     _exchangeAvailable = YES;
-    [self p_enableExchangeButton];
 }
 
 - (void)setUpdatingCurrenciesRatesFailedState {
@@ -69,17 +65,33 @@
     if (valueExceedsDeposit) {
         [self p_disableExchangeButton];
     } else {
+        
+        //if currencies rates in up to date state -> enable exchange
         if (_exchangeAvailable) {
             [self p_enableExchangeButton];
         }
     }
 }
 
+- (void)noValueToExchange {
+    [self p_disableExchangeButton];
+}
+
 #pragma mark - ExchangeNotificationHandlerDelegate
 
-- (void)keyboardHeightReceived:(CGFloat)originY {
-    _currenciesContainerBottomConstraint.constant = originY;
+- (void)keyboardHeightReceived:(CGFloat)height {
+    
+    //Bringing currencies controllers above keyboard
+    _currenciesContainerBottomConstraint.constant = height;
     [self.view layoutSubviews];
+}
+
+- (void)applicationWillResignActive {
+    
+}
+
+- (void)applicationDidBecomeActive {
+    
 }
 
 #pragma mark - Buttons actions
@@ -94,6 +106,7 @@
     [_currencyRateViewContainer addToMarginsConstraintsForView:_currencyRateView];
 }
 
+//Asking presenter to create currency view controllers
 - (void)p_fetchSubviews {
     [_output makeFromCurrencyController];
     [_output makeToCurrencyController];

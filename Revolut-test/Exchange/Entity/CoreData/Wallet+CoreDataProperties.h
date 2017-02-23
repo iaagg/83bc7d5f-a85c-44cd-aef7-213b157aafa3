@@ -8,7 +8,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSFetchRequest<Wallet *> *)fetchRequest;
 
+/*! @brief Currency to many ordered relation */
 @property (nullable, nonatomic, retain) NSOrderedSet<Currency *> *currencies;
+
+/*! @brief User relation */
 @property (nullable, nonatomic, retain) User *user;
 
 @end

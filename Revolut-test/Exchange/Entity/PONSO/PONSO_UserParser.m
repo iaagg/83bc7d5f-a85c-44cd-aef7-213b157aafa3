@@ -14,7 +14,6 @@
     
     //Parsing wallet
     PONSO_Wallet *wallet = [PONSO_WalletParser parseCoreDataWallet:user.wallet];
-    wallet.user = ponsoUser;
     ponsoUser.wallet = wallet;
     
     return ponsoUser;

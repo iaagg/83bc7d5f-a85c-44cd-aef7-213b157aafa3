@@ -29,6 +29,7 @@ static NSInteger const kRevolutExchangeValueInputLimit = 3;
         return NO;
     }
     
+    //If user typed new charecter or deleted some
     BOOL deleting = newString.length < textField.text.length;
     
     if (newStringWithoutPrefix.length == 0) {

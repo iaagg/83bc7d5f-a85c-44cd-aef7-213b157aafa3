@@ -2,23 +2,33 @@
 #import <UIKit/UIKit.h>
 #import "CurrencyTextFormatter.h"
 
+//Prefixes
 NSString * const kRevolutToCurrencyExchangeValuePrefix = @"+ ";
 NSString * const kRevolutFromCurrencyExchangeValuePrefix = @"- ";
 static NSString * const kRevolutDepositStringPrefix = @"You have ";
+
+//Internal values for attributing
+
+//1. Font sizes
 static CGFloat const kRevolutCurrencySymbolFontSize = 11;
 static CGFloat const kRevolutCurrencySymbolFontSizeInNavigationBar = 13;
 static CGFloat const kRevolutCurrencyRateLastDigitsFontSize = 10;
 static CGFloat const kRevolutCurrencyValueLastDigitsFontSize = 20;
 static CGFloat const kRevolutCurrencyValuePrefixFontSize = 20;
+
+//2. Counts of symbols with attributes
 static CGFloat const kRevolutCountOfLastRateDigitsToBeResizedInNavigationBar = 2;
 static CGFloat const kRevolutCountOfLastRateDigitsToBeResizedInToCurrency = 0;
 static CGFloat const kRevolutCountOfLastValueDigitsToBeResizedInToCurrency = 2;
 
+//Fonts for attributes
 #define DEPOSIT_LABEL_FONT          [UIFont systemFontOfSize:14.0]
 #define EXCHANGE_VALUE_FONT         [UIFont systemFontOfSize:24.0]
 #define NAVIGATION_BAR_RATE_FONT    [UIFont systemFontOfSize:17.0]
 #define TO_CURRENCY_RATE_FONT       [UIFont systemFontOfSize:14.0]
-#define CURRENCY_VALUE_FONT         [UIFont systemFontOfSize:38.0]
+#define CURRENCY_VALUE_FONT         [UIFont systemFontOfSize:32.0]
+
+//Colors for attributes
 #define DEPOSIT_HIGHLIGHT_COLOR     [UIColor colorWithRed:240./255. green:0. blue:2./255 alpha:1.0]
 
 @implementation CurrencyTextFormatter
@@ -32,8 +42,8 @@ static CGFloat const kRevolutCountOfLastValueDigitsToBeResizedInToCurrency = 2;
     
     //Changing font size of currency symbol
     UIFont *symbolFont = [DEPOSIT_LABEL_FONT fontWithSize:kRevolutCurrencySymbolFontSize];
-    NSRange rangeOfSymbol = [outputString rangeOfString:symbol];
-    [attrOutputString addAttribute:NSFontAttributeName value:symbolFont range:rangeOfSymbol];
+    NSDictionary *symbolAttributes = @{NSFontAttributeName: symbolFont};
+    [self p_stringWithAttributedSymbols:symbol inString:outputString attributes:symbolAttributes stringToModify:attrOutputString];
     
     //Highlight if needed
     if (shouldHighlight) {
@@ -71,12 +81,23 @@ static CGFloat const kRevolutCountOfLastValueDigitsToBeResizedInToCurrency = 2;
         rateFont = [font fontWithSize:kRevolutCurrencyRateLastDigitsFontSize];
         symbolFont = [font fontWithSize:kRevolutCurrencySymbolFontSize];
     }
-    NSMutableAttributedString *attrOutputString = [[NSMutableAttributedString alloc] initWithString:outputString attributes:attributes];
+    NSMutableAttributedString *attrOutputString = [[NSMutableAttributedString alloc] initWithString:outputString
+                                                                                         attributes:attributes];
     
     //Changing font size of currency symbols
     NSDictionary *symbolAttributes = @{NSFontAttributeName: symbolFont};
-    [self p_stringWithAttributedSymbols:fromCurrency inString:outputString attributes:symbolAttributes stringToModify:attrOutputString];
-    [self p_stringWithAttributedSymbols:toCurrency inString:outputString attributes:symbolAttributes stringToModify:attrOutputString];
+    
+    //1. first symbol
+    [self p_stringWithAttributedSymbols:fromCurrency
+                               inString:outputString
+                             attributes:symbolAttributes
+                         stringToModify:attrOutputString];
+    
+    //2 .second symbol
+    [self p_stringWithAttributedSymbols:toCurrency
+                               inString:outputString
+                             attributes:symbolAttributes
+                         stringToModify:attrOutputString];
     
     
     //Changing font size of last rate digits
@@ -88,12 +109,13 @@ static CGFloat const kRevolutCountOfLastValueDigitsToBeResizedInToCurrency = 2;
 + (NSAttributedString *)makeFromCurrencyValueStringWithValue:(NSNumber *)value {
     NSDictionary *defaultAttributes = @{NSFontAttributeName: CURRENCY_VALUE_FONT};
     NSString *outputString = [NSString stringWithFormat:@"%@%@", kRevolutFromCurrencyExchangeValuePrefix, value];
-    NSMutableAttributedString *attrOutputString = [[NSMutableAttributedString alloc] initWithString:outputString attributes:defaultAttributes];
+    NSMutableAttributedString *attrOutputString = [[NSMutableAttributedString alloc] initWithString:outputString
+                                                                                         attributes:defaultAttributes];
     
     //Changing font size of prefix
-    UIFont *prefixFont = [CURRENCY_VALUE_FONT fontWithSize:kRevolutCurrencyValuePrefixFontSize];
-    NSRange rangeOfPrefix = [outputString rangeOfString:kRevolutFromCurrencyExchangeValuePrefix];
-    [attrOutputString addAttribute:NSFontAttributeName value:prefixFont range:rangeOfPrefix];
+    [self p_changeFontOfPrefixInString:outputString
+                                prefix:kRevolutFromCurrencyExchangeValuePrefix
+                        stringToModify:attrOutputString];
     
     return attrOutputString;
 }
@@ -102,12 +124,13 @@ static CGFloat const kRevolutCountOfLastValueDigitsToBeResizedInToCurrency = 2;
     NSDictionary *defaultAttributes = @{NSFontAttributeName: CURRENCY_VALUE_FONT};
     double valueAsDouble = [value doubleValue];
     NSString *outputString = [NSString stringWithFormat:@"%@%.2f", kRevolutToCurrencyExchangeValuePrefix, valueAsDouble];
-    NSMutableAttributedString *attrOutputString = [[NSMutableAttributedString alloc] initWithString:outputString attributes:defaultAttributes];
+    NSMutableAttributedString *attrOutputString = [[NSMutableAttributedString alloc] initWithString:outputString
+                                                                                         attributes:defaultAttributes];
     
     //Changing font size of prefix
-    UIFont *prefixFont = [CURRENCY_VALUE_FONT fontWithSize:kRevolutCurrencyValuePrefixFontSize];
-    NSRange rangeOfPrefix = [outputString rangeOfString:kRevolutToCurrencyExchangeValuePrefix];
-    [attrOutputString addAttribute:NSFontAttributeName value:prefixFont range:rangeOfPrefix];
+    [self p_changeFontOfPrefixInString:outputString
+                                prefix:kRevolutToCurrencyExchangeValuePrefix
+                        stringToModify:attrOutputString];
     
     //Changing font size of last rate digits
     UIFont *lastDigitsFont = [CURRENCY_VALUE_FONT fontWithSize:kRevolutCurrencyValueLastDigitsFontSize];
@@ -117,6 +140,16 @@ static CGFloat const kRevolutCountOfLastValueDigitsToBeResizedInToCurrency = 2;
     return attrOutputString;
 }
 
+#pragma mark - Private methods
+
++ (NSMutableAttributedString *)p_changeFontOfPrefixInString:(NSString *)inputString prefix:(NSString *)prefix stringToModify:(NSMutableAttributedString *)attrOutputString {
+    UIFont *prefixFont = [CURRENCY_VALUE_FONT fontWithSize:kRevolutCurrencyValuePrefixFontSize];
+    NSRange rangeOfPrefix = [inputString rangeOfString:prefix];
+    [attrOutputString addAttribute:NSFontAttributeName value:prefixFont range:rangeOfPrefix];
+    return attrOutputString;
+}
+
+//Adding attributes to each found occurence of provided symbol in string.
 + (NSMutableAttributedString *)p_stringWithAttributedSymbols:(NSString *)symbol inString:(NSString *)inputString attributes:(NSDictionary *)attributes stringToModify:(NSMutableAttributedString *)outputString {
     BOOL symbolsExist = [inputString containsString:symbol];
     

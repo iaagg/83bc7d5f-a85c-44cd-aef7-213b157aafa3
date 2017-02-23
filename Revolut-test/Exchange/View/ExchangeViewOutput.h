@@ -3,14 +3,30 @@
 
 @protocol ExchangeViewOutput <NSObject>
 
+#pragma mark - VIPER methods
+
+/*!
+ * @discussion Notifies presenter that view was loaded
+ */
 - (void)viewIsReady;
 
-//User actions
-- (void)userChoosedToRetryToUpdateCurrencies;
+#pragma mark - User actions
+
+/*!
+ * @discussion Notifies presenter that user tapped Exchange button
+ */
 - (void)userChoosedToProcceedExchange;
 
-//Fetching Subviews
+#pragma mark - Fetching Subviews
+
+/*!
+ * @discussion Asks presenter to create FROM currency view controller
+ */
 - (void)makeFromCurrencyController;
+
+/*!
+ * @discussion Asks presenter to create TO currency view controller
+ */
 - (void)makeToCurrencyController;
 
 @end

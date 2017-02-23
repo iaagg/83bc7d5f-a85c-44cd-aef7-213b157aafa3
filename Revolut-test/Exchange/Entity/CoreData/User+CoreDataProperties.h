@@ -1,11 +1,3 @@
-//
-//  User+CoreDataProperties.h
-//  Revolut-test
-//
-//  Created by Alexey Getman on 19/02/2017.
-//  Copyright © 2017 AGG. All rights reserved.
-//  This file was automatically generated and should not be edited.
-//
 
 #import "User+CoreDataClass.h"
 
@@ -16,8 +8,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSFetchRequest<User *> *)fetchRequest;
 
+/*! @brief Username of user */
 @property (nullable, nonatomic, copy) NSString *username;
+
+/*! @brief Unique id of user in db */
 @property (nullable, nonatomic, copy) NSString *uuid;
+
+/*! @brief Wallet object relation */
 @property (nullable, nonatomic, retain) Wallet *wallet;
 
 @end

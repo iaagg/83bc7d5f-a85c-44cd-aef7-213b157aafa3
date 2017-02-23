@@ -1,11 +1,3 @@
-//
-//  Currency+CoreDataProperties.h
-//  Revolut-test
-//
-//  Created by Alexey Getman on 22/02/2017.
-//  Copyright © 2017 AGG. All rights reserved.
-//  This file was automatically generated and should not be edited.
-//
 
 #import "Currency+CoreDataClass.h"
 
@@ -16,8 +8,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSFetchRequest<Currency *> *)fetchRequest;
 
+/*! @brief Amount of currency in user's wallet */
 @property (nonatomic) double amount;
+
+/*! @brief Unicode symbol of currency */
 @property (nullable, nonatomic, copy) NSString *symbol;
+
+/*! @brief Abbreviation uf currency */
 @property (nullable, nonatomic, copy) NSString *title;
 
 @end

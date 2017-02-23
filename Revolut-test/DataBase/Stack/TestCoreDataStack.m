@@ -38,7 +38,26 @@ static NSString * const kRevolutTestStoreName = @"RevolutTestStore.sqlite";
                                      options:options
                                        error:&error];
     
-    NSAssert(error != nil, @"Fatal error: adding TestCoreDataStack persistent store failed");
+    NSAssert(error == nil, @"Fatal error: adding TestCoreDataStack persistent store failed");
+}
+
+- (void)deleteEntities:(Class)entitiesClass {
+    NSFetchRequest *fetchRequest =
+    [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass(entitiesClass)];
+    fetchRequest.includesPropertyValues = NO;
+    fetchRequest.includesSubentities = NO;
+    
+    NSError *error;
+    NSManagedObjectContext *bgContext = [self makeBackgroundContext];
+    NSArray *items = [bgContext executeFetchRequest:fetchRequest error:&error];
+    
+    for (NSManagedObject *managedObject in items) {
+        [bgContext deleteObject:managedObject];
+        NSLog(@"Deleted %@", NSStringFromClass(entitiesClass));
+    }
+    
+    [self saveBackgroundContext:bgContext];
+
 }
 
 @end

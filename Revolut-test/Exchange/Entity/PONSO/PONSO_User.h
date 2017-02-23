@@ -4,8 +4,13 @@
 
 @interface PONSO_User : NSObject
 
-@property (strong, nonatomic) NSString      *uuid;
+/*! @brief Username of user */
 @property (strong, nonatomic) NSString      *username;
+
+/*! @brief Unique id of user in db */
+@property (strong, nonatomic) NSString      *uuid;
+
+/*! @brief Wallet object */
 @property (strong, nonatomic) PONSO_Wallet  *wallet;
 
 @end

@@ -11,7 +11,7 @@
 
 /*!
  * @discussion Only for seeding default amounts of currencies
- * @return Array of Currency objects created
+ * @return Array of created Currency objects
  */
 + (NSArray<Currency *> *)parseSeedCurrencies;
 

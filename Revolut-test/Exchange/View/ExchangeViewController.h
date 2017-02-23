@@ -2,12 +2,10 @@
 #import <UIKit/UIKit.h>
 #import "ExchangeViewInput.h"
 #import "ExchangeViewOutput.h"
-#import "ExchangeNotificationsHandlerDelegate.h"
+#import "ExchangeViewNotificationsHandlerDelegate.h"
 
-@interface ExchangeViewController : UIViewController <ExchangeViewInput, ExchangeNotificationsHandlerDelegate>
+@interface ExchangeViewController : UIViewController <ExchangeViewInput, ExchangeViewNotificationsHandlerDelegate>
 
 @property (strong, nonatomic) id<ExchangeViewOutput> output;
-
-- (void)setupInitialState;
 
 @end

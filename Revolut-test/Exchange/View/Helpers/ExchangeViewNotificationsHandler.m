@@ -1,15 +1,15 @@
 
-#import "ExchangeNotificationsHandler.h"
+#import "ExchangeViewNotificationsHandler.h"
 
-@interface ExchangeNotificationsHandler ()
+@interface ExchangeViewNotificationsHandler ()
 
-@property (weak, nonatomic) id<ExchangeNotificationsHandlerDelegate> delegate;
+@property (weak, nonatomic) id<ExchangeViewNotificationsHandlerDelegate> delegate;
 
 @end
 
-@implementation ExchangeNotificationsHandler
+@implementation ExchangeViewNotificationsHandler
 
-- (instancetype)initWithDelegate:(id<ExchangeNotificationsHandlerDelegate>)delegate {
+- (instancetype)initWithDelegate:(id<ExchangeViewNotificationsHandlerDelegate>)delegate {
     if (self = [super init]) {
         _delegate = delegate;
         [self p_registerObservers];
@@ -21,6 +21,8 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+#pragma mark - Private methods
 
 - (void)p_registerObservers {
     [self p_registerSelector:@selector(p_keyboardDidShowNotificationReceived:) forNotificationName:UIKeyboardWillShowNotification];

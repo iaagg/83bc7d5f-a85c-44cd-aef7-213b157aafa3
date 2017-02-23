@@ -34,8 +34,8 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     _exchangeValue = newValue;
     [self p_reloadCentralSection];
     [self p_focusOnCurrentCurrencyValue];
-    [self p_checkForExceedingTheDeposit];
     [_delegate currencyExchangeValueWasUpdated:newValue];
+    [self p_checkForExceedingTheDeposit];
 }
 
 #pragma mark - CurrencyCollectionViewDataManagerProtocol
@@ -60,6 +60,12 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
             NSArray *currencies = _dataSource[1];
             
             if (currencies.count > pageIndex.item) {
+                
+                //Making any first cell as first responder to call keyboard
+                NSIndexPath *indexOfFirstCell = [NSIndexPath indexPathForRow:0 inSection:0];
+                [self p_focusOnCurrencyValueInCellWithIndex:indexOfFirstCell];
+                
+                //Switching to proper cell
                 [self p_switchToPageWithIndexPath:pageIndex];
             }
         }
@@ -160,12 +166,12 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
                             atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                     animated:NO];
     
-    //In case of carousel shifting cell may be not initialized yet to become first responder
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self p_focusOnCurrencyValueInCellWithIndex:indexPath];
-        [_delegate switchedToCurrencyWithIndex:indexPath.item];
-        [self p_checkForExceedingTheDeposit];
-    });
+        //In case of carousel shifting cell may be not initialized yet to become first responder
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self p_focusOnCurrencyValueInCellWithIndex:indexPath];
+            [_delegate switchedToCurrencyWithIndex:indexPath.item];
+            [self p_checkForExceedingTheDeposit];
+        });
 }
 
 - (void)p_focusOnCurrentCurrencyValue {
@@ -176,7 +182,16 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
 - (void)p_focusOnCurrencyValueInCellWithIndex:(NSIndexPath *)indexPath {
     if (_viewType == FromCurrencyType) {
         CurrencyCollectionViewCell *cell = (CurrencyCollectionViewCell *)([_collectionView cellForItemAtIndexPath:indexPath]);
+        
+        //Avoiding keyboard appearence animation
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.0];
+        [UIView setAnimationDelay:0.0];
+        [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+        
         [cell.value becomeFirstResponder];
+        
+        [UIView commitAnimations];
     }
 }
 
@@ -221,6 +236,7 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     return _collectionView.bounds.size.width;
 }
 
+//Determines if user dragged scroll view to new page
 - (BOOL)p_isPageSwitchedWithOffset:(CGFloat)offset {
     BOOL switched = false;
     NSInteger intOffset = offset;
@@ -236,16 +252,32 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
 - (NSIndexPath *)p_currentPage {
     NSInteger numberOfPages = [self p_numberOfCurrencies];
     NSInteger carouselPage = _collectionView.contentOffset.x / [self p_pageWidth];
+    
+    //index of item in central section
     NSInteger pageInCentralSection;
     
+    /*  Deremining correct page according to carousel effect
+        DataSource for collection view has special structure for carousel effect:
+     
+                          0 section   1 section   2 section
+                        [ [0, 1, 2],  [3, 4, 5],  [6, 7, 8] ]
+     
+    */
+    
+    //# User dragged to 0 section
     if (carouselPage < numberOfPages) {
         pageInCentralSection = (carouselPage + numberOfPages) % numberOfPages;
+        
+    //# User dragged inside 1 section
     } else if (carouselPage >= numberOfPages * 2) {
         pageInCentralSection = (carouselPage - numberOfPages) % numberOfPages;
+        
+    //# User dragged to 2 dection
     } else {
         pageInCentralSection = carouselPage % numberOfPages;
     }
     
+    //Doesn't matter in which section is user now -> we always detect the corresponding page in section 1.
     NSIndexPath *page = [NSIndexPath indexPathForRow:pageInCentralSection inSection:1];
     return page;
 }

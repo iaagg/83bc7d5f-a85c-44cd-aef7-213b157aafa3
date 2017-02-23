@@ -11,6 +11,4 @@
 @property (weak, nonatomic) id<ExchangeViewInput>           view;
 @property (strong, nonatomic) id<ExchangeInteractorInput>   interactor;
 
-- (void)viewIsReady;
-
 @end

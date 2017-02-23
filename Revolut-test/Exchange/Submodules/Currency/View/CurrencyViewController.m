@@ -26,16 +26,16 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-//    [_collectionView layoutIfNeeded];
-//    [_collectionView reloadData];
+    
+    //switching to initial currency page
     [_dataManager switchToPageWithIndex:_currentCurrencyIndex];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    //Enable animations after keyboard appearing
-    [UIView setAnimationsEnabled:YES];
+    //Sets initial exchange value to nil
+    [_output currencyExchangeValueWasUpdated:nil];
 }
 
 #pragma mark - CurrencyViewInput
@@ -98,9 +98,19 @@
     }
 }
 
+- (void)p_setupCollectionViewWithDataSorce:(NSArray *)dataSorce {
+    _dataManager = [[CurrencyCollectionViewDataManager alloc] initWithDelegate:self dataSource:dataSorce];
+    _dataManager.collectionView = _collectionView;
+    _dataManager.viewType = _viewType;
+    _collectionView.dataSource = _dataManager;
+    _collectionView.delegate = _dataManager;
+}
+
+#pragma Used only for "ToCurrencyType" view type
+
 - (void)p_setupToCurrencyInterface {
     
-    //Overlay
+    //Overlay view creation and setup
     UIView *overlay = [[UIView alloc] initWithFrame:self.view.frame];
     overlay.userInteractionEnabled = NO;
     overlay.translatesAutoresizingMaskIntoConstraints = NO;
@@ -112,21 +122,15 @@
     [CurrencyDrawingHelper cutTriangleFromCurrencyOverlayView:overlay];
 }
 
+#pragma VIPER methods
+
 - (id<CurrencyModuleInput>)p_fetchModule {
     __block id<CurrencyModuleInput> module;
     [_output module:^(id<CurrencyModuleInput> fetchedModule) {
         module = fetchedModule;
     }];
-     
+    
     return module;
-}
-
-- (void)p_setupCollectionViewWithDataSorce:(NSArray *)dataSorce {
-    _dataManager = [[CurrencyCollectionViewDataManager alloc] initWithDelegate:self dataSource:dataSorce];
-    _dataManager.collectionView = _collectionView;
-    _dataManager.viewType = _viewType;
-    _collectionView.dataSource = _dataManager;
-    _collectionView.delegate = _dataManager;
 }
 
 @end

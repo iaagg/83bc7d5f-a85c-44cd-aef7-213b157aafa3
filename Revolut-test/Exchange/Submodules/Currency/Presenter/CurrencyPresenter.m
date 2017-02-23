@@ -13,7 +13,7 @@
 #pragma mark - CurrencyModuleInput
 
 - (void)setUpdatingCurrenciesRatesFailedState {
-    [self updateExchangeResultLabelWithValue:@0];
+    [self updateExchangeResultLabelWithValue:nil];
     [self updateCurrencyRateLabelWithRate:nil];
 }
 
