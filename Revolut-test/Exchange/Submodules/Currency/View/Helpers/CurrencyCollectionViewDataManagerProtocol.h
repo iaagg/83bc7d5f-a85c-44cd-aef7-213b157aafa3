@@ -15,6 +15,7 @@
 
 - (void)switchToPageWithIndex:(NSInteger)index;
 - (void)updateExchangeResultLabelWithValue:(NSNumber *)value;
-- (void)reloadAfterSuccessfulExchange;
+- (void)checkIfExchangeValueExceedsTheDeposit;
+- (void)reload;
 
 @end

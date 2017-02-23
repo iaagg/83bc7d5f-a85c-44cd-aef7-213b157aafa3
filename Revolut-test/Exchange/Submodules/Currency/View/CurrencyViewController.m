@@ -20,10 +20,22 @@
     [_output viewIsReady];
 }
 
+- (void)viewWillLayoutSubviews {
+    [_collectionView.collectionViewLayout invalidateLayout];
+}
+
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    [self.view layoutIfNeeded];
+//    [_collectionView layoutIfNeeded];
+//    [_collectionView reloadData];
     [_dataManager switchToPageWithIndex:_currentCurrencyIndex];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    //Enable animations after keyboard appearing
+    [UIView setAnimationsEnabled:YES];
 }
 
 #pragma mark - CurrencyViewInput
@@ -36,11 +48,15 @@
 }
 
 - (void)reloadInterfaceAfterSuccessfulExchange {
-    [_dataManager reloadAfterSuccessfulExchange];
+    [_dataManager reload];
 }
 
 - (void)didMakeDataSourceForCurrencyCollectionView:(NSArray *)dataSource {
     [self p_setupCollectionViewWithDataSorce:dataSource];
+}
+
+- (void)requestDepositExceedingInfo {
+    [_dataManager checkIfExchangeValueExceedsTheDeposit];
 }
 
 - (void)updateCurrencyRateLabelWithRate:(CurrencyRate *)currencyRate {

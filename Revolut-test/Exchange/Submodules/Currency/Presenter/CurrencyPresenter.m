@@ -12,9 +12,22 @@
 
 #pragma mark - CurrencyModuleInput
 
+- (void)setUpdatingCurrenciesRatesFailedState {
+    [self updateExchangeResultLabelWithValue:@0];
+    [self updateCurrencyRateLabelWithRate:nil];
+}
+
+- (void)reloadInterface {
+    [_view reloadInterfaceAfterSuccessfulExchange];
+}
+
 - (void)setupWithWallet:(PONSO_Wallet *)wallet currencyViewType:(CurrencyViewType)currencyViewType {
     _wallet = wallet;
     _currencyViewType = currencyViewType;
+}
+
+- (void)requestDepositExceedingInfo {
+    [_view requestDepositExceedingInfo];
 }
 
 - (void)updateCurrencyRateLabelWithRate:(CurrencyRate *)currencyRate {
@@ -23,10 +36,6 @@
 
 - (void)updateExchangeResultLabelWithValue:(NSNumber *)value {
     [_view updateExchangeResultLabelWithValue:value];
-}
-
-- (void)reloadInterface {
-    [_view reloadInterfaceAfterSuccessfulExchange];
 }
 
 #pragma mark - CurrencyViewOutput

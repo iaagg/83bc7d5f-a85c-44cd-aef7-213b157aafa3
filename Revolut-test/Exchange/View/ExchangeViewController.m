@@ -3,7 +3,6 @@
 #import "ExchangeNotificationsHandlerProtocol.h"
 #import "ExchangeNotificationsHandler.h"
 #import "UIView+DefaultConstraints.h"
-#import "AlertsManager.h"
 
 @interface ExchangeViewController ()
 
@@ -15,10 +14,18 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint                 *currenciesContainerBottomConstraint;
 @property (weak, nonatomic) IBOutlet UIButton                           *exchangeButton;
 @property (weak, nonatomic) IBOutlet UIButton                           *cancelButton;
+@property (assign, nonatomic) BOOL                                      exchangeAvailable;
 
 @end
 
 @implementation ExchangeViewController
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    
+    //Making keyboard appeared without animations
+    [UIView setAnimationsEnabled:NO];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -41,11 +48,13 @@
 
 - (void)setUpdatedCurrenciesRatesStateWith:(CurrencyRate *)rate {
     [_currencyRateView updateRateWithCurrencyRate:rate];
+    _exchangeAvailable = YES;
     [self p_enableExchangeButton];
 }
 
 - (void)setUpdatingCurrenciesRatesFailedState {
-    [self p_presentUpdatingFailedAlert];
+    _exchangeAvailable = NO;
+    [self p_disableExchangeButton];
 }
 
 - (void)didMakeFromCurrencyController:(UIViewController *)controller {
@@ -60,7 +69,9 @@
     if (valueExceedsDeposit) {
         [self p_disableExchangeButton];
     } else {
-        [self p_enableExchangeButton];
+        if (_exchangeAvailable) {
+            [self p_enableExchangeButton];
+        }
     }
 }
 
@@ -101,10 +112,6 @@
 - (void)p_addChildViewController:(UIViewController *)child {
     [self addChildViewController:child];
     [child didMoveToParentViewController:self];
-}
-
-- (void)p_presentUpdatingFailedAlert {
-    [AlertsManager showUpdatingFailedAlertInController:self];
 }
 
 - (void)p_disableExchangeButton {

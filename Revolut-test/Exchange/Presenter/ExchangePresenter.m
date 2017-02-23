@@ -75,11 +75,15 @@ static NSString * const kRevolutCurrencyViewControllerSB_ID = @"CurrencyViewCont
 }
 
 - (void)didFailedFetchingCurrenciesRates {
+    _currenciesRates = nil;
     [_view setUpdatingCurrenciesRatesFailedState];
+    [_toCurrencySubModule setUpdatingCurrenciesRatesFailedState];
+    
 }
 
 - (void)didFinishFetchingCurrenciesRates {
     [self p_performCurrencyRateUpdate];
+    [_fromCurrencySubModule requestDepositExceedingInfo];
 }
 
 - (void)didFinishExchange {

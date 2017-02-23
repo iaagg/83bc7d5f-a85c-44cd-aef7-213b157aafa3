@@ -75,7 +75,11 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     });
 }
 
-- (void)reloadAfterSuccessfulExchange {
+- (void)checkIfExchangeValueExceedsTheDeposit {
+    [self p_checkForExceedingTheDeposit];
+}
+
+- (void)reload {
     _exchangeValue = nil;
     [self p_reloadCentralSection];
     [self p_focusOnCurrentCurrencyValue];
@@ -148,12 +152,6 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     if ([self p_isPageSwitchedWithOffset:offset]) {
         NSIndexPath *indexOfPage = [self p_currentPage];
         [self p_switchToPageWithIndexPath:indexOfPage];
-        
-        //In case of carousel shifting cell may be not initialized yet to become first responder
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self p_focusOnCurrencyValueInCellWithIndex:indexOfPage];
-            [_delegate switchedToCurrencyWithIndex:indexOfPage.item];
-        });
     }
 }
 
@@ -161,10 +159,12 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     [_collectionView scrollToItemAtIndexPath:indexPath
                             atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                     animated:NO];
+    
     //In case of carousel shifting cell may be not initialized yet to become first responder
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self p_focusOnCurrencyValueInCellWithIndex:indexPath];
         [_delegate switchedToCurrencyWithIndex:indexPath.item];
+        [self p_checkForExceedingTheDeposit];
     });
 }
 
@@ -203,6 +203,8 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
                                                                                            toCurrency:_rate.toCurrency
                                                                                                  rate:_rate.rate
                                                                                                  from:NO];
+    } else {
+        cell.currencyRateLabel.text = @"";
     }
     
     //Value textfield
@@ -244,7 +246,7 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
         pageInCentralSection = carouselPage % numberOfPages;
     }
     
-    NSIndexPath *page = [NSIndexPath indexPathForItem:pageInCentralSection inSection:1];
+    NSIndexPath *page = [NSIndexPath indexPathForRow:pageInCentralSection inSection:1];
     return page;
 }
 

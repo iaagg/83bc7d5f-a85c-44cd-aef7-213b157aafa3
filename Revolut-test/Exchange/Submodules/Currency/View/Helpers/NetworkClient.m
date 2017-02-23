@@ -21,6 +21,7 @@ static NSTimeInterval const kRevolutDefaultRequestTimeout = 20;
     // Instantiate a session configuration object.
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     configuration.timeoutIntervalForRequest = kRevolutDefaultRequestTimeout;
+    configuration.requestCachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     
     // Instantiate a session object.
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];

@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -82,14 +81,14 @@
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="CR4-gA-GYp" firstAttribute="height" secondItem="Zl9-5n-W7B" secondAttribute="height" multiplier="0.5" id="B2B-N1-8Et"/>
                                     <constraint firstItem="CR4-gA-GYp" firstAttribute="top" secondItem="Zl9-5n-W7B" secondAttribute="top" id="E76-f5-zUX"/>
                                     <constraint firstItem="CR4-gA-GYp" firstAttribute="leading" secondItem="Zl9-5n-W7B" secondAttribute="leading" id="McB-1Q-Amu"/>
                                     <constraint firstAttribute="trailing" secondItem="CR4-gA-GYp" secondAttribute="trailing" id="NjK-cB-9Zt"/>
                                     <constraint firstAttribute="trailing" secondItem="3Rl-I8-fAT" secondAttribute="trailing" id="YyZ-79-dix"/>
+                                    <constraint firstItem="CR4-gA-GYp" firstAttribute="height" secondItem="3Rl-I8-fAT" secondAttribute="height" id="dE7-ez-jr3"/>
                                     <constraint firstAttribute="bottom" secondItem="3Rl-I8-fAT" secondAttribute="bottom" id="gVf-m2-w91"/>
-                                    <constraint firstItem="3Rl-I8-fAT" firstAttribute="height" secondItem="Zl9-5n-W7B" secondAttribute="height" multiplier="0.5" id="ihh-sO-qQz"/>
                                     <constraint firstItem="3Rl-I8-fAT" firstAttribute="leading" secondItem="Zl9-5n-W7B" secondAttribute="leading" id="lgb-8W-T2O"/>
+                                    <constraint firstItem="3Rl-I8-fAT" firstAttribute="top" secondItem="CR4-gA-GYp" secondAttribute="bottom" id="uaB-BN-krd"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -181,7 +180,7 @@
         <!--View Controller-->
         <scene sceneID="CFa-JF-NMv">
             <objects>
-                <viewController storyboardIdentifier="CurrencyViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4vI-7W-eWq" customClass="CurrencyViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CurrencyViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4vI-7W-eWq" customClass="CurrencyViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DxQ-1C-GRD"/>
                         <viewControllerLayoutGuide type="bottom" id="WDL-yJ-QJs"/>
@@ -190,7 +189,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4iU-rA-zc2">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4iU-rA-zc2">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="338"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="cj2-7K-bf5">
@@ -323,7 +322,6 @@
                             <constraint firstAttribute="trailing" secondItem="4iU-rA-zc2" secondAttribute="trailing" id="D36-7F-vVG"/>
                             <constraint firstItem="wWY-zb-s6G" firstAttribute="top" secondItem="4iU-rA-zc2" secondAttribute="bottom" id="E4e-yd-m78"/>
                             <constraint firstItem="WDL-yJ-QJs" firstAttribute="top" secondItem="wWY-zb-s6G" secondAttribute="bottom" id="kuZ-yv-Kc8"/>
-                            <constraint firstItem="wWY-zb-s6G" firstAttribute="top" secondItem="4iU-rA-zc2" secondAttribute="bottom" id="nty-td-vzl"/>
                             <constraint firstItem="4iU-rA-zc2" firstAttribute="leading" secondItem="iYa-Kh-OhV" secondAttribute="leading" id="sEi-ze-gN2"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>

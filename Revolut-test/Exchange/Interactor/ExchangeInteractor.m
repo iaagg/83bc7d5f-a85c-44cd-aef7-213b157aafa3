@@ -14,7 +14,7 @@
 #import "CurrencyRate.h"
 
 static NSString * const kRevolutDefaultUsername = @"defaultRevolutUser";
-static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
+static NSTimeInterval const kRevolutRatesRequestPeriod = 5;//30;
 
 @interface ExchangeInteractor () <CurrenciesParserDelegate>
 
@@ -38,7 +38,6 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
 #pragma mark - ExchangeIneractorInput
 
 - (void)startFetchingRatesTask {
-    [_output didStartFetchingCurrenciesRates];
     [self p_fetchRatesData];
     _fetchRatesTimer = [NSTimer scheduledTimerWithTimeInterval:kRevolutRatesRequestPeriod target:self selector:@selector(p_fetchRatesData) userInfo:nil repeats:YES];
 }
@@ -134,6 +133,8 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
 }
 
 - (void)p_fetchRatesData {
+    [_output didStartFetchingCurrenciesRates];
+    
     [[NetworkClient shared] requestCurrenciesWithSuccess:^(NSData *response) {
         [_currenciesParser parseXMLWithData:response];
     } failureHandler:^(NSError *error) {

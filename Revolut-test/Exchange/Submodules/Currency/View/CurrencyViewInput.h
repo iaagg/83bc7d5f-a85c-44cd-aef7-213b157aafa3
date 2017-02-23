@@ -11,6 +11,8 @@
 - (void)reloadInterfaceAfterSuccessfulExchange;
 - (void)didMakeDataSourceForCurrencyCollectionView:(NSArray *)dataSource;
 
+- (void)requestDepositExceedingInfo;
+
 - (void)updateCurrencyRateLabelWithRate:(CurrencyRate *)currencyRate;
 - (void)updateExchangeResultLabelWithValue:(NSNumber *)value;
 
