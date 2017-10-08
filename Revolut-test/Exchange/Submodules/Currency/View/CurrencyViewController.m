@@ -115,10 +115,7 @@
     overlay.userInteractionEnabled = NO;
     overlay.translatesAutoresizingMaskIntoConstraints = NO;
     overlay.backgroundColor = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0.15];
-    [self.view addSubview:overlay];
-    NSDictionary *views = @{@"overlay" : overlay};
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[overlay]|" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[overlay]|" options:NSLayoutFormatAlignAllCenterX metrics:nil views:views]];
+    [self.view addToMarginsConstraintsForView:overlay];
     [CurrencyDrawingHelper cutTriangleFromCurrencyOverlayView:overlay];
 }
 

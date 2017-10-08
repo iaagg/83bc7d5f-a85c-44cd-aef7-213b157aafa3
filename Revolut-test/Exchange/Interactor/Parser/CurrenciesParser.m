@@ -3,7 +3,6 @@
 #import "SeedDataExtractor.h"
 #import "NSManagedObject+Creating.h"
 #import "Currency+CoreDataClass.h"
-#import "StackFactory.h"
 #import "CurrencyRate.h"
 
 #define CURRENCIES  @"currencies"
@@ -68,7 +67,7 @@ static NSString * const kRevolutSeedCurrencies = @"CurrenciesSeeds";
 + (NSArray<Currency *> *)parseSeedCurrencies {
     NSDictionary *seedData = extractJSONWithFilename(kRevolutSeedCurrencies, [NSBundle bundleForClass:[self class]]);
     NSMutableArray *parsedCurrencies = [NSMutableArray new];
-    NSManagedObjectContext *mainContext = [StackFactory stackForCurrentEnvironment].mainQueueContext;
+    NSManagedObjectContext *mainContext = CORE_DATA_STACK.mainQueueContext;
     
     NSArray *currencies = [seedData objectForKey:CURRENCIES];
     

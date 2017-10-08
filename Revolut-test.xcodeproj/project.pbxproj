@@ -110,8 +110,8 @@
 		3F0336181E5B4E80009FD37E /* CurrencyTextFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyTextFormatter.m; sourceTree = "<group>"; };
 		3F03361B1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyValueTextfieldDelegate.h; sourceTree = "<group>"; };
 		3F03361C1E5B6249009FD37E /* CurrencyValueTextfieldDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyValueTextfieldDelegate.m; sourceTree = "<group>"; };
-		3F03361F1E5B6275009FD37E /* NetworkClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkClient.h; path = "Revolut-test/Exchange/Submodules/Currency/View/Helpers/NetworkClient.h"; sourceTree = SOURCE_ROOT; };
-		3F0336201E5B6275009FD37E /* NetworkClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NetworkClient.m; path = "Revolut-test/Exchange/Submodules/Currency/View/Helpers/NetworkClient.m"; sourceTree = SOURCE_ROOT; };
+		3F03361F1E5B6275009FD37E /* NetworkClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkClient.h; path = "Revolut-test/NetworkLayer/NetworkClient.h"; sourceTree = SOURCE_ROOT; };
+		3F0336201E5B6275009FD37E /* NetworkClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NetworkClient.m; path = "Revolut-test/NetworkLayer/NetworkClient.m"; sourceTree = SOURCE_ROOT; };
 		3F0336231E5B6A76009FD37E /* CurrenciesParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrenciesParserDelegate.h; sourceTree = "<group>"; };
 		3F0336261E5B8E5A009FD37E /* CurrencyRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyRate.h; sourceTree = "<group>"; };
 		3F0336271E5B8E5A009FD37E /* CurrencyRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyRate.m; sourceTree = "<group>"; };
@@ -120,6 +120,7 @@
 		3F03362D1E5C3E86009FD37E /* RatesMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RatesMaker.m; sourceTree = "<group>"; };
 		3F0336501E5C6AD2009FD37E /* UIView+DefaultConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DefaultConstraints.h"; sourceTree = "<group>"; };
 		3F0336511E5C6AD2009FD37E /* UIView+DefaultConstraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DefaultConstraints.m"; sourceTree = "<group>"; };
+		3F5F80181F8A7F7100D85018 /* CommonDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonDefines.h; sourceTree = "<group>"; };
 		3FC120991E59DF5C00A834BE /* CurrencyCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyCollectionViewCell.h; sourceTree = "<group>"; };
 		3FC1209A1E59DF5C00A834BE /* CurrencyCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyCollectionViewCell.m; sourceTree = "<group>"; };
 		3FC1209E1E59E06200A834BE /* CurrencyCollectionViewDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyCollectionViewDataManager.h; sourceTree = "<group>"; };
@@ -273,6 +274,14 @@
 				3F0336511E5C6AD2009FD37E /* UIView+DefaultConstraints.m */,
 			);
 			path = Categories;
+			sourceTree = "<group>";
+		};
+		3F5F80171F8A7F4A00D85018 /* CommonHeaders */ = {
+			isa = PBXGroup;
+			children = (
+				3F5F80181F8A7F7100D85018 /* CommonDefines.h */,
+			);
+			path = CommonHeaders;
 			sourceTree = "<group>";
 		};
 		3FC120981E59DF0900A834BE /* Subviews */ = {
@@ -578,13 +587,13 @@
 			children = (
 				3F03364F1E5C6A89009FD37E /* Categories */,
 				3FEDAB5E1E59AAA200D3C0A8 /* DataBase */,
-				6B85C9431E578D680082A62C /* Services */,
+				6B85C9431E578D680082A62C /* NetworkLayer */,
 				6B85C93B1E578BBF0082A62C /* ExchangeModule */,
+				6B85C9081E5779C20082A62C /* Supporting Files */,
 				6B85C90B1E5779C20082A62C /* AppDelegate.h */,
 				6B85C90C1E5779C20082A62C /* AppDelegate.m */,
 				6B85C9141E5779C20082A62C /* Assets.xcassets */,
 				6B85C9161E5779C20082A62C /* LaunchScreen.storyboard */,
-				6B85C9081E5779C20082A62C /* Supporting Files */,
 			);
 			path = "Revolut-test";
 			sourceTree = "<group>";
@@ -592,6 +601,7 @@
 		6B85C9081E5779C20082A62C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3F5F80171F8A7F4A00D85018 /* CommonHeaders */,
 				6B85C9091E5779C20082A62C /* main.m */,
 				3FEDAB831E59C78100D3C0A8 /* Revolut-test_PrefixHeader.pch */,
 				6B85C9191E5779C20082A62C /* Info.plist */,
@@ -681,21 +691,13 @@
 			path = Submodules;
 			sourceTree = "<group>";
 		};
-		6B85C9431E578D680082A62C /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				6B85C9441E578D9A0082A62C /* Network */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		6B85C9441E578D9A0082A62C /* Network */ = {
+		6B85C9431E578D680082A62C /* NetworkLayer */ = {
 			isa = PBXGroup;
 			children = (
 				3F03361F1E5B6275009FD37E /* NetworkClient.h */,
 				3F0336201E5B6275009FD37E /* NetworkClient.m */,
 			);
-			path = Network;
+			path = NetworkLayer;
 			sourceTree = "<group>";
 		};
 		6B85C95F1E5798200082A62C /* Subviews */ = {

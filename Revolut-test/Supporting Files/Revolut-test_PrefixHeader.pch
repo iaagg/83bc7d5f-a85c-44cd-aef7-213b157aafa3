@@ -2,6 +2,8 @@
 #ifndef Revolut_test_PrefixHeader_pch
 #define Revolut_test_PrefixHeader_pch
 #import "Notifications.h"
+#import "CommonDefines.h"
+#import "UIView+DefaultConstraints.h"
 
 #define PRODUCTION [[[NSProcessInfo processInfo] environment] objectForKey:@"TESTING"] == nil
 

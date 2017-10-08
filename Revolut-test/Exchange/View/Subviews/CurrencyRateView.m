@@ -2,7 +2,6 @@
 #import "CurrencyRateView.h"
 #import "CurrencyTextFormatter.h"
 #import "CurrencyRate.h"
-#import "UIView+DefaultConstraints.h"
 
 @interface CurrencyRateView ()
 

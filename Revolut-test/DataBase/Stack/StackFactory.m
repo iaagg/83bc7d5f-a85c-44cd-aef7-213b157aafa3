@@ -7,9 +7,7 @@
 
 + (id<StackProtocol>)stackForCurrentEnvironment {
     id<StackProtocol> stack;
-    BOOL isProductionEnvironment = PRODUCTION;
-    
-    if (isProductionEnvironment) {
+    if (PRODUCTION) {
         stack = [CoreDataStack shared];
     } else {
         stack = [TestCoreDataStack shared];

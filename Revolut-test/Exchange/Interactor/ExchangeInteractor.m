@@ -1,5 +1,4 @@
 #import "ExchangeInteractor.h"
-#import "StackFactory.h"
 #import "NSManagedObject+Creating.h"
 #import "User+FetchRequests.h"
 #import "Wallet+CoreDataClass.h"
@@ -33,7 +32,7 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
 
 - (instancetype)init {
     if (self = [super init]) {
-        _coreDataStack = [StackFactory stackForCurrentEnvironment];
+        _coreDataStack = CORE_DATA_STACK;
         _currenciesParser = [[CurrenciesParser alloc] initWithDelegate:self];
         _notificationsHandler = [[ExchangeInteractorNotificationsHandler alloc] initWithDelegate:self];
     }
@@ -174,7 +173,7 @@ static NSTimeInterval const kRevolutRatesRequestPeriod = 30;
     [_output didFetchDefaultUser:ponsoUser];
 }
 
-#pragma Creationg of hardcoded default user 
+#pragma Creation of default user 
 
 - (User *)p_setupDefaultUser {
     NSManagedObjectContext *mainContext = _coreDataStack.mainQueueContext;

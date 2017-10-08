@@ -6,7 +6,6 @@
 #import "User+CoreDataClass.h"
 #import "Wallet+CoreDataClass.h"
 #import "Currency+CoreDataClass.h"
-#import "StackFactory.h"
 
 @implementation UserSaver
 
@@ -21,7 +20,7 @@
         }
     }
     
-    [[StackFactory stackForCurrentEnvironment] saveBackgroundContext:context];
+    [CORE_DATA_STACK saveBackgroundContext:context];
 }
 
 #pragma mark - Private methods

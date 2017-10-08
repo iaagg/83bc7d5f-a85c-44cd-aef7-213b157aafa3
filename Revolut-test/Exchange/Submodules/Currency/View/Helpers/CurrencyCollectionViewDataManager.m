@@ -256,7 +256,7 @@ static NSString * const kRevolutCurrencyCollectionViewCellID = @"kRevolutCurrenc
     //index of item in central section
     NSInteger pageInCentralSection;
     
-    /*  Deremining correct page according to carousel effect
+    /*  Determining correct page according to carousel effect
         DataSource for collection view has special structure for carousel effect:
      
                           0 section   1 section   2 section

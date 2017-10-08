@@ -13,7 +13,7 @@
 /*! @brief rate for currency which would be received after conversion. Works through it's setter. */
 @property (strong, nonatomic, setter=setRate:) CurrencyRate      *rate;
 
-/*! @brief determins the typer of CurrencyViewController 
+/*! @brief determines the type of CurrencyViewController 
            (if viewType == FromCurrencyType -> 'rate' property should always be nil) */
 @property (assign, nonatomic) CurrencyViewType  viewType;
 
